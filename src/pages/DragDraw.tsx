@@ -45,7 +45,7 @@ const DragDraw = (props: Props) => {
     });
     return (
         <div style={{position: 'relative'}}>
-            <canvas ref={canvasRef} width={800} height={700} style={{border: '1px solid yellow'}}></canvas>
+            <canvas ref={canvasRef} width={800} height={650} style={{border: '1px solid yellow'}}></canvas>
             <div
                 style={{
                     position: 'absolute',

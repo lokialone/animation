@@ -1,5 +1,4 @@
 import React, {useEffect, useRef} from 'react';
-import Arrow from '../shape/arrow';
 import {captureMouse} from '../utils/index';
 import {fromEvent} from 'rxjs';
 interface Props {
@@ -31,7 +30,7 @@ const Home = (props: Props) => {
     return (
         <>
             <p>曲线穿过鼠标 公式： const x1 = mouse.x * 2 - (x0 + x2) / 2; const y1 = mouse.y * 2 - (y0 + y2) / 2; </p>
-            <canvas ref={canvasRef} width={800} height={650}></canvas>
+            <canvas ref={canvasRef} width={800} height={600}></canvas>
         </>
     );
 };

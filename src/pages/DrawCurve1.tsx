@@ -30,7 +30,7 @@ const Home = (props: Props) => {
     return (
         <>
             <p>鼠标为弧形控制点</p>
-            <canvas ref={canvasRef} width={800} height={650}></canvas>
+            <canvas ref={canvasRef} width={800} height={600}></canvas>
         </>
     );
 };
