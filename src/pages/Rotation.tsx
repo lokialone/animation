@@ -39,7 +39,7 @@ const Home = (props: Props) => {
         }
         draw();
     }, []);
-    return <canvas ref={canvasRef} width={800} height={650}></canvas>;
+    return <canvas ref={canvasRef} width={800} height={600}></canvas>;
 };
 
 export default Home;
