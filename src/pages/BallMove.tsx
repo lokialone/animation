@@ -28,14 +28,15 @@ const BallMove = (canvas: HTMLCanvasElement) => {
         }
         _draw();
     }
-    function setBallPostion(x: number, y: number): void {
-        ball.x = x;
-        ball.y = y;
+    function resetPostion(angle: number): void {
+        ball.x = 100;
+        ball.y = 100;
+        draw(angle);
     }
     function stopAnimation(): void {
         if (cancelAnimationId) cancelAnimationFrame(cancelAnimationId);
     }
-    return {draw, setBallPostion, stopAnimation};
+    return {draw, resetPostion, stopAnimation};
 };
 const input$ = new Subject();
 const BallMoveContainer = (props: Props) => {
@@ -60,7 +61,7 @@ const BallMoveContainer = (props: Props) => {
         <>
             <button onClick={() => ballMove.draw(angle)}>启动</button>
             <button onClick={() => ballMove.stopAnimation()}>暂停</button>
-            <button onClick={() => ballMove.setBallPostion(100, 100)}>reset</button>
+            <button onClick={() => ballMove.resetPostion(angle)}>reset</button>
             角度：
             <input
                 type="number"
