@@ -8,8 +8,8 @@ export default class Ball {
     scaleY: number;
     lineWidth: number;
     constructor(radius = 40, color = '#ffff00') {
-        this.x = 100;
-        this.y = 400;
+        this.x = 0;
+        this.y = 0;
         this.radius = radius;
         this.color = color;
         this.rotation = 0;
