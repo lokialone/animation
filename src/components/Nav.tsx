@@ -38,6 +38,12 @@ const Home = (props: any) => {
                     <li>
                         <NavLink to="BallsMove">BallsMove</NavLink>
                     </li>
+                    <li>
+                        <NavLink to="InvertColor">图片颜色修改</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Test">Test</NavLink>
+                    </li>
                 </ul>
             </Nav>
             {/* <div>{props.children}</div> */}

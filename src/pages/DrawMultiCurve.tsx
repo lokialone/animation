@@ -24,12 +24,12 @@ const Home = (props: Props) => {
             ctrlPoint.y = (points[i].y + points[i + 1].y) / 2;
             ctx.quadraticCurveTo(points[i].x, points[i].y, ctrlPoint.x, ctrlPoint.y);
         }
-        // ctx.quadraticCurveTo(
-        //     points[numPoints - 2].x,
-        //     points[numPoints - 2].y,
-        //     points[numPoints - 1].x,
-        //     points[numPoints - 1].y,
-        // );
+        ctx.quadraticCurveTo(
+            points[numPoints - 2].x,
+            points[numPoints - 2].y,
+            points[numPoints - 1].x,
+            points[numPoints - 1].y,
+        );
         ctx.stroke();
     }
     const handleClick = () => {

@@ -8,8 +8,9 @@ import DrawCurve2 from './pages/DrawCurve2';
 import DrawMultiCurve from './pages/DrawMultiCurve';
 import BallMove from './pages/BallMove';
 import BallsMove from './pages/BallsMove';
+import Test from './pages/Test';
 import Rxjs from './pages/Rxjs';
-
+import InvertColor from './pages/InvertColor';
 const Route = () => (
     <Router>
         <Rxjs path="rxjs"></Rxjs>
@@ -21,6 +22,8 @@ const Route = () => (
         <DrawMultiCurve path="DrawMultiCurve"></DrawMultiCurve>
         <BallMove path="BallMove"></BallMove>
         <BallsMove path="BallsMove"></BallsMove>
+        <InvertColor path="InvertColor"></InvertColor>
+        <Test path="Test"></Test>
     </Router>
 );
 export default Route;
