@@ -7,8 +7,8 @@ interface Props {
 }
 
 const Container = styled.div`
-    width: 800px;
-    height: 500px;
+    width: calc(100vw-200px);
+    height: 100vh;
     img {
         width: 60px;
         height: 50px;
@@ -26,12 +26,17 @@ const BallsMove = (props: Props) => {
         if (!con) return;
         const con$ = fromEvent(con, 'mousemove').pipe(map((e: any) => ({x: e.clientX, y: e.clientY})));
         const imgList = document.getElementsByTagName('img');
+        const unsubscribes: any[] = [];
         Array.from(imgList).forEach((item, index: number) => {
-            con$.pipe(delay((600 * (Math.pow(0.65, index) + Math.cos(index / 4))) / 2)).subscribe(pos => {
+            const subs = con$.pipe(delay((600 * (Math.pow(0.65, index) + Math.cos(index / 4))) / 2)).subscribe(pos => {
                 item.style.left = pos.x + 'px';
                 item.style.top = pos.y + 'px';
             });
+            unsubscribes.push(subs);
         });
+        return () => {
+            unsubscribes.forEach(sub => sub.unsubscribe());
+        };
     }, []);
     return (
         <Container ref={container}>
