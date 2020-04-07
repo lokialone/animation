@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Container = styled.div`
-    width: 500px;
+    width: 800px;
     height: 500px;
     img {
         width: 60px;
@@ -35,6 +35,7 @@ const BallsMove = (props: Props) => {
     }, []);
     return (
         <Container ref={container}>
+            <div>当前区域滑动鼠标</div>
             <img src="/logo192.png" alt="" />
             <img src="/logo192.png" alt="" />
             <img src="/logo192.png" alt="" />
