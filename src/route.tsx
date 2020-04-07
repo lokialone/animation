@@ -7,6 +7,7 @@ import DrawCurve1 from './pages/DrawCurve1';
 import DrawCurve2 from './pages/DrawCurve2';
 import DrawMultiCurve from './pages/DrawMultiCurve';
 import BallMove from './pages/BallMove';
+import BallsMove from './pages/BallsMove';
 import Rxjs from './pages/Rxjs';
 
 const Route = () => (
@@ -19,6 +20,7 @@ const Route = () => (
         <DrawCurve2 path="DrawCurve2"></DrawCurve2>
         <DrawMultiCurve path="DrawMultiCurve"></DrawMultiCurve>
         <BallMove path="BallMove"></BallMove>
+        <BallsMove path="BallsMove"></BallsMove>
     </Router>
 );
 export default Route;

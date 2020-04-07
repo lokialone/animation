@@ -35,6 +35,9 @@ const Home = (props: any) => {
                     <li>
                         <NavLink to="BallMove">BallMove</NavLink>
                     </li>
+                    <li>
+                        <NavLink to="BallsMove">BallsMove</NavLink>
+                    </li>
                 </ul>
             </Nav>
             {/* <div>{props.children}</div> */}
