@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 // import Arrow from '../shape/arrow';
-// import {captureMouse} from '../utils/index';
-// import raf from 'raf';
+import {captureMouse} from '../utils/index';
+import raf from 'raf';
 // import {fromEvent} from 'rxjs';
 interface Props {
     path?: string;
@@ -10,8 +10,10 @@ const Home = (props: Props) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
         if (!canvasRef?.current) return;
-        const ctx = canvasRef && canvasRef?.current.getContext('2d');
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
         const image = new Image();
+        const mouse = captureMouse(canvas);
         if (!ctx) return;
         image.src = '/logo192.png';
 

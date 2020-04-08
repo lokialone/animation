@@ -11,6 +11,9 @@ import BallsMove from './pages/BallsMove';
 import Test from './pages/Test';
 import Rxjs from './pages/Rxjs';
 import InvertColor from './pages/InvertColor';
+import PixelMove from './pages/PixelMove';
+import SprayPrint from './pages/SprayPrint';
+import ShipGame from './pages/ShipGame';
 const Route = () => (
     <Router>
         <Rxjs path="rxjs"></Rxjs>
@@ -23,6 +26,9 @@ const Route = () => (
         <BallMove path="BallMove"></BallMove>
         <BallsMove path="BallsMove"></BallsMove>
         <InvertColor path="InvertColor"></InvertColor>
+        <PixelMove path="PixelMove"></PixelMove>
+        <SprayPrint path="SprayPrint"></SprayPrint>
+        <ShipGame path="ShipGame"></ShipGame>
         <Test path="Test"></Test>
     </Router>
 );

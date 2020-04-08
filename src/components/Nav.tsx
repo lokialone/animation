@@ -42,6 +42,15 @@ const Home = (props: any) => {
                         <NavLink to="InvertColor">图片颜色修改</NavLink>
                     </li>
                     <li>
+                        <NavLink to="PixelMove">我瞎了</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="SprayPrint">喷漆</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="ShipGame">飞船~</NavLink>
+                    </li>
+                    <li>
                         <NavLink to="Test">Test</NavLink>
                     </li>
                 </ul>
