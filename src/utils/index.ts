@@ -4,6 +4,22 @@ interface PositionType {
     y: number;
 }
 
+// for rxjs
+export function convertPosition(event: MouseEvent | TouchEvent, element: HTMLElement, isTouch = false) {
+    let x = 0;
+    let y = 0;
+    const currentEvent = isTouch ? (event as TouchEvent).touches[0] : (event as MouseEvent);
+    if (currentEvent.pageX && currentEvent.pageY) {
+        x = currentEvent.pageX;
+        y = currentEvent.pageY;
+    } else {
+        x = currentEvent.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+        x = currentEvent.clientX + document.body.scrollTop + document.documentElement.scrollTop;
+    }
+    x -= element.getBoundingClientRect().left;
+    y -= element.getBoundingClientRect().top;
+    return {x, y};
+}
 export function captureMouse(element: HTMLElement): PositionType {
     const mouse: PositionType = {x: 0, y: 0};
     element.addEventListener(
@@ -34,12 +50,14 @@ export function captureTouch(element: HTMLElement): {x: number; y: number; isPre
         'touchestart',
         () => {
             touch.isPress = true;
+            console.log('touchestart');
         },
         false,
     );
     element.addEventListener(
         'touchend',
         () => {
+            console.log('touchend');
             touch.isPress = false;
             touch.x = 0;
             touch.y = 0;
@@ -50,6 +68,7 @@ export function captureTouch(element: HTMLElement): {x: number; y: number; isPre
     element.addEventListener(
         'touchmove',
         (event: TouchEvent) => {
+            console.log('touchmove');
             let x = 0;
             let y = 0;
             const touchEvent = event.touches[0];
@@ -60,14 +79,17 @@ export function captureTouch(element: HTMLElement): {x: number; y: number; isPre
                 x = touchEvent.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
                 x = touchEvent.clientX + document.body.scrollTop + document.documentElement.scrollTop;
             }
-            x -= element.offsetLeft;
-            y -= element.offsetTop;
+            x -= element.getBoundingClientRect().left;
+            y -= element.getBoundingClientRect().top;
             touch.x = x;
             touch.y = y;
         },
         false,
     );
     return touch;
+}
+export function isTouchMode(): boolean {
+    return 'ontouchend' in document;
 }
 
 /**

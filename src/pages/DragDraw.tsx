@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
-import {captureMouse} from '../utils/index';
+import {captureMouse, convertPosition} from '../utils/index';
 import {fromEvent} from 'rxjs';
-import {takeUntil, mergeMap} from 'rxjs/operators';
+import {takeUntil, mergeMap, map} from 'rxjs/operators';
 // import raf from 'raf';
 interface Props {
     path?: string;
@@ -16,7 +16,9 @@ const DragDraw = (props: Props) => {
         const canvasMouseMove = fromEvent(canvas, 'mousemove');
         const canvasMouseUp = fromEvent(document, 'mouseup');
         const canvasMouseDown = fromEvent(canvas, 'mousedown');
-        const mouse = captureMouse(canvas);
+        const canvasTouchMove = fromEvent(canvas, 'touchmove');
+        const canvasTouchEnd = fromEvent(document, 'touchend');
+        const canvasTouchStart = fromEvent(canvas, 'touchstart');
         let colorHue = 0;
         function init(): void {
             if (!ctx) return;
@@ -25,24 +27,45 @@ const DragDraw = (props: Props) => {
             ctx.lineWidth = 70;
         }
         init();
-        function painit(): void {
+        function painit(x: number, y: number): void {
             if (!ctx) return;
             ctx.strokeStyle = `hsl(${colorHue}, 100%, 60%)`;
             ctx.beginPath();
-            ctx.lineTo(mouse.x, mouse.y);
+            ctx.lineTo(x, y);
             ctx.stroke();
             colorHue++;
         }
+
+        canvasTouchStart
+            .pipe(
+                mergeMap(() => {
+                    return canvasTouchMove.pipe(
+                        map((event: any) => {
+                            return convertPosition(event, canvas, true);
+                        }),
+                        takeUntil(canvasTouchEnd),
+                    );
+                }),
+            )
+            .subscribe(({x, y}) => {
+                painit(x, y);
+            });
+
         canvasMouseDown
             .pipe(
                 mergeMap(() => {
-                    return canvasMouseMove.pipe(takeUntil(canvasMouseUp));
+                    return canvasMouseMove.pipe(
+                        map((event: any) => {
+                            return convertPosition(event, canvas, false);
+                        }),
+                        takeUntil(canvasMouseUp),
+                    );
                 }),
             )
-            .subscribe(() => {
-                painit();
+            .subscribe(({x, y}) => {
+                painit(x, y);
             });
-    });
+    }, []);
     return (
         <div style={{position: 'relative'}}>
             <canvas ref={canvasRef} width={800} height={650} style={{border: '1px solid yellow'}}></canvas>
