@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import Arrow from '../shape/arrow';
 import {captureMouse} from '../utils/index';
+import colors from 'nice-color-palettes';
 import raf from 'raf';
 import Ball from '../shape/ball';
 interface Props {
@@ -12,28 +13,42 @@ const Home = (props: Props) => {
         if (!canvasRef?.current) return;
         const ctx = canvasRef && canvasRef?.current.getContext('2d');
         const canvas = canvasRef?.current;
-        const ball = new Ball(30);
-        if (!ctx) return;
-        let angleX = 0;
-        let angleY = 0;
-        const range = 50;
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const xspeed = 0.07;
-        const yspeed = 0.11;
-        function draw(): void {
-            raf(draw);
+        const balls: Ball[] = [];
+        const ballNumbers = 180;
+        const gravity = 0.5;
+        for (let i = 0; i < ballNumbers; i++) {
+            const ball = new Ball(4, colors[0][i % 5]);
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.vx = Math.random() * 6 - 3;
+            ball.vy = Math.random() * -10 - 10;
+            balls.push(ball);
+        }
+        function draw(ball: Ball): void {
             if (!ctx) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ball.x = centerX + Math.sin(angleX) * range;
-            ball.y = centerY + Math.sin(angleY) * range;
-            angleX += xspeed;
-            angleY += yspeed;
-            // ball.y = 400 + Math.sin(angle) * range;
-
+            ball.vy += gravity;
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            if (
+                ball.x - ball.radius > canvas.width ||
+                ball.x + ball.radius < 0 ||
+                ball.y - ball.radius > canvas.height ||
+                ball.y + ball.radius < 0
+            ) {
+                ball.x = canvas.width / 2;
+                ball.y = canvas.height / 2;
+                ball.vx = Math.random() * 6 - 3;
+                ball.vy = Math.random() * -10 - 10;
+            }
             ball.draw(ctx);
         }
-        draw();
+        function drawFrame() {
+            if (!ctx) return;
+            raf(drawFrame);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            balls.forEach(draw);
+        }
+        drawFrame();
     }, []);
     return (
         <>

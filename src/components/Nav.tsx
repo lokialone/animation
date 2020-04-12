@@ -18,8 +18,11 @@ const Home = (props: any) => {
                         <NavLink to="RandomBall">RandomBall</NavLink>
                     </li>
                     <li>
-                        <NavLink to="rxjs">rxjs</NavLink>
+                        <NavLink to="BouncingBall">BouncingBall</NavLink>
                     </li>
+                    {/* <li>
+                        <NavLink to="rxjs">rxjs</NavLink>
+                    </li> */}
                     <li>
                         <NavLink to="DragDraw">DragDraw</NavLink>
                     </li>

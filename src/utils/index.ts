@@ -1,7 +1,9 @@
+import {BoundRect} from '../types';
 interface PositionType {
     x: number;
     y: number;
 }
+
 export function captureMouse(element: HTMLElement): PositionType {
     const mouse: PositionType = {x: 0, y: 0};
     element.addEventListener(
@@ -86,6 +88,10 @@ export function colorHexToRGB(color: string, alpha = 1): string {
     const blue = _color & 0xff;
     if (alpha === 1) return `ragb(${red}, ${green}, ${blue})`;
     return `ragb(${red}, ${green}, ${blue}, ${alpha})`;
+}
+
+export function containPoint(rect: BoundRect, x: number, y: number): boolean {
+    return !(x < rect.x || x > rect.x + rect.width || y < rect.y || y > rect.y + rect.height);
 }
 
 /**

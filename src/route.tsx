@@ -14,6 +14,7 @@ import InvertColor from './pages/InvertColor';
 import PixelMove from './pages/PixelMove';
 import SprayPrint from './pages/SprayPrint';
 import ShipGame from './pages/ShipGame';
+import BouncingBall from './pages/BouncingBall';
 const Route = () => (
     <Router>
         <Rxjs path="rxjs"></Rxjs>
@@ -29,6 +30,7 @@ const Route = () => (
         <PixelMove path="PixelMove"></PixelMove>
         <SprayPrint path="SprayPrint"></SprayPrint>
         <ShipGame path="ShipGame"></ShipGame>
+        <BouncingBall path="BouncingBall"></BouncingBall>
         <Test path="Test"></Test>
     </Router>
 );
