@@ -116,6 +116,15 @@ export function containPoint(rect: BoundRect, x: number, y: number): boolean {
     return !(x < rect.x || x > rect.x + rect.width || y < rect.y || y > rect.y + rect.height);
 }
 
+export function getDirect(pos1: number, pos2: number) {
+    if (pos1 - pos2 === 0) return 0;
+    return (pos1 - pos2) / Math.abs(pos1 - pos2);
+}
+
+export function getDistance(x1: number, y1: number, x2: number, y2: number) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+}
+
 /**
  * #ff0000,
  * ff0000, 0.1 ===> rgba(255,0,0,0.1)

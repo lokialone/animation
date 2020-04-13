@@ -39,6 +39,9 @@ const Home = (props: any) => {
                         <NavLink to="BallMove">BallMove</NavLink>
                     </li>
                     <li>
+                        <NavLink to="BallDrag">抛球</NavLink>
+                    </li>
+                    <li>
                         <NavLink to="BallsMove">BallsMove</NavLink>
                     </li>
                     <li>
@@ -52,6 +55,24 @@ const Home = (props: any) => {
                     </li>
                     <li>
                         <NavLink to="ShipGame">飞船~</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Ease">缓动</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Spring">弹动</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Spring2">弹动2</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Spring3">多物体弹动</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Spring4">多目标弹动</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Spring5">双向弹动</NavLink>
                     </li>
                     <li>
                         <NavLink to="Test">Test</NavLink>
