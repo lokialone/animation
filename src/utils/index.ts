@@ -125,6 +125,15 @@ export function getDistance(x1: number, y1: number, x2: number, y2: number) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
 
+export function intersects(rectA: BoundRect, rectB: BoundRect) {
+    return !(
+        rectA.x + rectA.width < rectB.x ||
+        rectB.x + rectB.width < rectA.x ||
+        rectA.y + rectA.height < rectB.y ||
+        rectB.y + rectB.height < rectA.y
+    );
+}
+
 /**
  * #ff0000,
  * ff0000, 0.1 ===> rgba(255,0,0,0.1)

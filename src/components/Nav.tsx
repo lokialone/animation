@@ -75,6 +75,12 @@ const Home = (props: any) => {
                         <NavLink to="Spring5">双向弹动</NavLink>
                     </li>
                     <li>
+                        <NavLink to="Box">box碰撞检测</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Bubbles">ball弹性碰撞</NavLink>
+                    </li>
+                    <li>
                         <NavLink to="Test">Test</NavLink>
                     </li>
                 </ul>

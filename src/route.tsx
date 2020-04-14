@@ -22,6 +22,8 @@ import Spring2 from './pages/Spring2';
 import Spring3 from './pages/Spring3';
 import Spring4 from './pages/Spring4';
 import Spring5 from './pages/Spring5';
+import Box from './pages/Box';
+import Bubbles from './pages/Bubbles';
 const Route = () => (
     <Router>
         <Rxjs path="rxjs"></Rxjs>
@@ -45,6 +47,8 @@ const Route = () => (
         <Spring4 path="Spring4"></Spring4>
         <Spring5 path="Spring5"></Spring5>
         <Spring path="Spring"></Spring>
+        <Box path="Box"></Box>
+        <Bubbles path="Bubbles"></Bubbles>
         <Test path="Test"></Test>
     </Router>
 );

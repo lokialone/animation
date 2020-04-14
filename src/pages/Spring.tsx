@@ -31,7 +31,7 @@ const BallMoveContainer = (props: Props) => {
         const mouseUp$ = fromEvent(window, 'mouseup');
         const spring = 0.03;
         const friction = 0.95;
-        const springLength = 50;
+        const springLength = 100;
         // let vx = getDirect(targetX, ball.x);
         // let vy = getDirect(targetY, ball.y);
         let vx = 0;
@@ -70,32 +70,34 @@ const BallMoveContainer = (props: Props) => {
                 ball.x = x;
                 ball.y = y;
             });
-        function drawSpring(from: Position, to: Position, space = 6, height = 50) {
-            if (!ctx) return;
-            const lineWidth = 20;
-            const tx = to.x - from.x - lineWidth;
-            const ty = to.y - from.y;
-            const angle = Math.atan2(ty, tx);
-            const dx = Math.ceil(tx / (space * 2)) / Math.cos(angle);
-            const dy = height * Math.sin(angle);
-            ctx.beginPath();
-            ctx.moveTo(from.x, from.y);
-            const startX = (from.x + lineWidth / 2) / Math.cos(angle);
-            ctx.lineTo(startX, from.y);
-            let yDirect = 1;
-            for (let i = 1; i < space * 2; i++) {
-                const currnetx = startX + dx * (i - 1);
-                const nextx = startX + dx * i;
-                const nexty = from.y;
-                const ctrx = currnetx + dx / 2;
-                const ctry = from.y + (dy / 2) * yDirect;
-                yDirect = -1 * yDirect;
-                ctx.quadraticCurveTo(ctrx, ctry, nextx, nexty);
-            }
-            ctx.lineTo(to.x, to.y);
-            ctx.stroke();
-            ctx.closePath();
-        }
+        function drawSpring(from: Position, to: Position, space = 6, height = 50) {}
+        // function drawSpring(from: Position, to: Position, space = 6, height = 50) {
+        //     if (!ctx) return;
+        //     const lineWidth = 20;
+        //     const tx = to.x - from.x;
+        //     const ty = to.y - from.y;
+        //     const angle = Math.atan2(ty, tx);
+        //     const dx = (tx - lineWidth) / (space * 2);
+        //     ctx.beginPath();
+        //     ctx.moveTo(from.x, from.y);
+        //     const startX = (lineWidth / 2) * Math.cos(angle) + from.x;
+        //     const startY = from.y + (lineWidth / 2) * Math.sin(angle);
+        //     ctx.lineTo(startX, startY);
+        //     let yDirect = 1;
+        //     for (let i = 1; i < space * 2; i++) {
+        //         const currnetx = startX + dx * (i - 1) * Math.cos(angle);
+        //         const currenty = startY + dx * (i - 1) * Math.sin(angle);
+        //         const nextx = startX + dx * i * Math.cos(angle);
+        //         const nexty = startY + dx * i * Math.sin(angle);
+        //         const ctrx = (currnetx + nextx) / 2;
+        //         const ctry = ((currenty + nexty) / 2) * yDirect;
+        //         yDirect = -1 * yDirect;
+        //         ctx.quadraticCurveTo(ctrx, ctry, nextx, nexty);
+        //     }
+        //     ctx.lineTo(to.x, to.y);
+        //     ctx.stroke();
+        //     ctx.closePath();
+        // }
 
         function draw() {
             if (!ctx) return;
