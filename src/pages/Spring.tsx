@@ -70,9 +70,29 @@ const BallMoveContainer = (props: Props) => {
                 ball.x = x;
                 ball.y = y;
             });
-        function drawSpring(from: Position, to: Position, space = 6, height = 50) {}
+        function drawSpring(from: Position, to: Position, space = 6, height = 50) {
+            if (!ctx) return;
+            ctx.save();
+            ctx.beginPath();
+            const ball = new Ball(10);
+            ball.x = from.x;
+            ball.y = from.y;
+            ball.draw(ctx);
+
+            const angle = Math.atan2(to.y - from.y, to.x - from.x);
+            ctx.rotate(angle);
+            // ctx.moveTo(0, 0);
+            for (let i = from.x; i <= to.x; i++) {
+                const y = Math.sin(i / 5) * 100 - 50;
+                ctx.lineTo(i, y);
+            }
+
+            ctx.stroke();
+            ctx.closePath();
+            ctx.restore();
+        }
         // function drawSpring(from: Position, to: Position, space = 6, height = 50) {
-        //     if (!ctx) return;
+        //
         //     const lineWidth = 20;
         //     const tx = to.x - from.x;
         //     const ty = to.y - from.y;
@@ -118,17 +138,14 @@ const BallMoveContainer = (props: Props) => {
                 ball.x += vx;
                 ball.y += vy;
             }
-            drawSpring({x: ball.x + ball.radius, y: ball.y}, {x: fixedX, y: fixedY});
+
             center.draw(ctx);
             ball.draw(ctx);
             ctx.beginPath();
             ctx.moveTo(100, 400);
-            //    next point  (120, 400)
-            // 穿过 （110， 410）;
-            // next point (140, 400);
-            // 穿过 (130, 390);
         }
-        draw();
+        // draw();
+        drawSpring({x: 200, y: 200}, {x: 600, y: 600});
 
         return () => {
             drag$.unsubscribe();

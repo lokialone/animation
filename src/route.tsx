@@ -24,6 +24,8 @@ import Spring4 from './pages/Spring4';
 import Spring5 from './pages/Spring5';
 import Box from './pages/Box';
 import Bubbles from './pages/Bubbles';
+import Rotate from './pages/Rotate';
+import AngleBounce from './pages/AngleBounce';
 const Route = () => (
     <Router>
         <Rxjs path="rxjs"></Rxjs>
@@ -49,6 +51,8 @@ const Route = () => (
         <Spring path="Spring"></Spring>
         <Box path="Box"></Box>
         <Bubbles path="Bubbles"></Bubbles>
+        <Rotate path="Rotate"></Rotate>
+        <AngleBounce path="AngleBounce"></AngleBounce>
         <Test path="Test"></Test>
     </Router>
 );

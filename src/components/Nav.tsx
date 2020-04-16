@@ -81,6 +81,12 @@ const Home = (props: any) => {
                         <NavLink to="Bubbles">ball弹性碰撞</NavLink>
                     </li>
                     <li>
+                        <NavLink to="Rotate">坐标旋转</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="AngleBounce">斜面反弹</NavLink>
+                    </li>
+                    <li>
                         <NavLink to="Test">Test</NavLink>
                     </li>
                 </ul>
