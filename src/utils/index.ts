@@ -108,8 +108,8 @@ export function colorHexToRGB(color: string, alpha = 1): string {
     const red = (_color >> 16) & 0xff;
     const green = (_color >> 8) & 0xff;
     const blue = _color & 0xff;
-    if (alpha === 1) return `ragb(${red}, ${green}, ${blue})`;
-    return `ragb(${red}, ${green}, ${blue}, ${alpha})`;
+    if (alpha === 1) return `rgba(${red}, ${green}, ${blue})`;
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
 }
 
 export function containPoint(rect: BoundRect, x: number, y: number): boolean {

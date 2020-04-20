@@ -10,6 +10,7 @@ export default class Ball {
     public vx: number;
     public vy: number;
     public lineWidth: number;
+    public mass: number;
     constructor(radius = 40, color = '#ffff00') {
         this.x = 0;
         this.y = 0;
@@ -20,6 +21,7 @@ export default class Ball {
         this.vx = 0;
         this.vy = 0;
         this.scaleY = 1;
+        this.mass = 1;
         this.lineWidth = 1;
     }
     public draw(ctx: CanvasRenderingContext2D): void {

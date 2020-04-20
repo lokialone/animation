@@ -87,6 +87,15 @@ const Home = (props: any) => {
                         <NavLink to="AngleBounce">斜面反弹</NavLink>
                     </li>
                     <li>
+                        <NavLink to="MultiAngleBounce">多斜面反弹</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="PE">动量守恒</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="NodeGarden">粒子动画</NavLink>
+                    </li>
+                    <li>
                         <NavLink to="Test">Test</NavLink>
                     </li>
                 </ul>

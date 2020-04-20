@@ -26,6 +26,9 @@ import Box from './pages/Box';
 import Bubbles from './pages/Bubbles';
 import Rotate from './pages/Rotate';
 import AngleBounce from './pages/AngleBounce';
+import MultiAngleBounce from './pages/MultiAngleBounce';
+import PE from './pages/PE';
+import NodeGarden from './pages/NodeGarden';
 const Route = () => (
     <Router>
         <Rxjs path="rxjs"></Rxjs>
@@ -53,6 +56,9 @@ const Route = () => (
         <Bubbles path="Bubbles"></Bubbles>
         <Rotate path="Rotate"></Rotate>
         <AngleBounce path="AngleBounce"></AngleBounce>
+        <MultiAngleBounce path="MultiAngleBounce"></MultiAngleBounce>
+        <PE path="PE"></PE>
+        <NodeGarden path="NodeGarden"></NodeGarden>
         <Test path="Test"></Test>
     </Router>
 );
