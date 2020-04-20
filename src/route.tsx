@@ -29,6 +29,7 @@ import AngleBounce from './pages/AngleBounce';
 import MultiAngleBounce from './pages/MultiAngleBounce';
 import PE from './pages/PE';
 import NodeGarden from './pages/NodeGarden';
+import Segment from './pages/Segment';
 const Route = () => (
     <Router>
         <Rxjs path="rxjs"></Rxjs>
@@ -59,6 +60,7 @@ const Route = () => (
         <MultiAngleBounce path="MultiAngleBounce"></MultiAngleBounce>
         <PE path="PE"></PE>
         <NodeGarden path="NodeGarden"></NodeGarden>
+        <Segment path="Segment"></Segment>
         <Test path="Test"></Test>
     </Router>
 );

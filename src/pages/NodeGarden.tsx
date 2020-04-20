@@ -7,7 +7,7 @@ interface Props {
     path?: string;
 }
 
-const BallMoveContainer = (props: Props) => {
+const NodeGarden = (props: Props) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
         if (!canvasRef?.current) return;
@@ -83,4 +83,4 @@ const BallMoveContainer = (props: Props) => {
     );
 };
 
-export default BallMoveContainer;
+export default NodeGarden;

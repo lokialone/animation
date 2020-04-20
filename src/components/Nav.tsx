@@ -96,6 +96,9 @@ const Home = (props: any) => {
                         <NavLink to="NodeGarden">粒子动画</NavLink>
                     </li>
                     <li>
+                        <NavLink to="Segment">正向运动-行走</NavLink>
+                    </li>
+                    <li>
                         <NavLink to="Test">Test</NavLink>
                     </li>
                 </ul>

@@ -1,5 +1,6 @@
 import Ball from '../shape/ball';
 import Line from '../shape/line';
+import Segment from '../shape/segment';
 import {BasicMoveItem} from '../types';
 export function gravity(nodeA: Ball, nodeB: Ball) {
     const dx = nodeB.x - nodeA.x;
@@ -145,4 +146,14 @@ export function checkBoundaries(ball: Ball, canvas: HTMLCanvasElement, mode = Ch
     // TODO
     if (mode === CheckBoundariesMode.reset) {
     }
+}
+
+export function walk(segment1: Segment, segment2: Segment, cyc: number, offset = -1.3) {
+    const angle1 = ((Math.sin(cyc) * 45 + 90) * Math.PI) / 180;
+    const angle2 = ((Math.sin(cyc + offset) * 45 + 45) * Math.PI) / 180;
+    segment1.rotation = angle1;
+    segment2.rotation = angle1 + angle2;
+    const {x, y} = segment1.getPin();
+    segment2.x = x;
+    segment2.y = y;
 }
