@@ -14,6 +14,9 @@ const SegmentsMove = (props: Props) => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         let cancelAnimationId = 0;
+        const gravity = 0.01;
+        let vx = 0.2;
+        let vy = 0;
         const segment = new Segment(50, 15);
         const segment1 = new Segment(50, 10);
         const segment2 = new Segment(50, 15);
@@ -26,13 +29,52 @@ const SegmentsMove = (props: Props) => {
         segment1.x = x;
         segment1.y = y;
         let cycle = 0;
+        function setVelocity() {
+            vy += gravity;
+            segment.x += vx;
+            segment.y += vy;
+            segment2.x += vx;
+            segment2.y += vy;
+        }
+
+        function checkWalls() {
+            const w = canvas.width + 200;
+            if (segment.x > canvas.width + 100) {
+                segment.x -= w;
+                segment1.x -= w;
+                segment2.x -= w;
+                segment3.x -= w;
+            } else if (segment.x < -100) {
+                segment.x += w;
+                segment1.x += w;
+                segment2.x += w;
+                segment3.x += w;
+            }
+        }
+
+        function checkFloor(seg: Segment) {
+            const y = seg.getPin().y + seg.height / 2;
+            if (y > canvas.height) {
+                const dy = y - canvas.height;
+                segment.y -= dy;
+                segment1.y -= dy;
+                segment2.y -= dy;
+                segment3.y -= dy;
+                vx -= seg.vx;
+                vy -= seg.vy;
+            }
+        }
         function drawFrame() {
             if (!ctx) return;
             cancelAnimationId = raf(drawFrame);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             cycle += 0.02;
+            setVelocity();
             walk(segment, segment1, cycle);
             walk(segment2, segment3, cycle + Math.PI);
+            checkFloor(segment1);
+            checkFloor(segment3);
+            checkWalls();
             segment.draw(ctx);
             segment1.draw(ctx);
             segment2.draw(ctx);

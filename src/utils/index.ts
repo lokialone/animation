@@ -16,8 +16,9 @@ export function convertPosition(event: MouseEvent | TouchEvent, element: HTMLEle
         x = currentEvent.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
         x = currentEvent.clientX + document.body.scrollTop + document.documentElement.scrollTop;
     }
-    x -= element.getBoundingClientRect().left;
-    y -= element.getBoundingClientRect().top;
+    const bbox = element.getBoundingClientRect();
+    x -= bbox.left;
+    y -= bbox.top;
     return {x, y};
 }
 export function captureMouse(element: HTMLElement): PositionType {

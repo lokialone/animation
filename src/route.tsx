@@ -30,6 +30,8 @@ import MultiAngleBounce from './pages/MultiAngleBounce';
 import PE from './pages/PE';
 import NodeGarden from './pages/NodeGarden';
 import Segment from './pages/Segment';
+import SegmentDrag from './pages/SegmentDrag';
+import Bounce3d from './pages/Bounce3d';
 const Route = () => (
     <Router>
         <Rxjs path="rxjs"></Rxjs>
@@ -61,6 +63,8 @@ const Route = () => (
         <PE path="PE"></PE>
         <NodeGarden path="NodeGarden"></NodeGarden>
         <Segment path="Segment"></Segment>
+        <SegmentDrag path="SegmentDrag"></SegmentDrag>
+        <Bounce3d path="Bounce3d"></Bounce3d>
         <Test path="Test"></Test>
     </Router>
 );

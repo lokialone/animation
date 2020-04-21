@@ -99,6 +99,12 @@ const Home = (props: any) => {
                         <NavLink to="Segment">正向运动-行走</NavLink>
                     </li>
                     <li>
+                        <NavLink to="SegmentDrag">反向运动-拖拽</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="Bounce3d">3d反弹</NavLink>
+                    </li>
+                    <li>
                         <NavLink to="Test">Test</NavLink>
                     </li>
                 </ul>

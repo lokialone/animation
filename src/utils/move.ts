@@ -154,6 +154,10 @@ export function walk(segment1: Segment, segment2: Segment, cyc: number, offset =
     segment1.rotation = angle1;
     segment2.rotation = angle1 + angle2;
     const {x, y} = segment1.getPin();
+    const {x: x1, y: y1} = segment2.getPin();
+
     segment2.x = x;
     segment2.y = y;
+    segment2.vx = segment2.getPin().x - x1;
+    segment2.vy = segment2.getPin().y - y1;
 }
