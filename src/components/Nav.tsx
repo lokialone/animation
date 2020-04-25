@@ -38,7 +38,7 @@ const Nav = styled.div`
 
 const NavConfig = [
     {
-        label: '图片操作',
+        label: '图片区域选择',
         value: 'ImageOperate',
     },
     {

@@ -25,15 +25,21 @@ const SelectDiv = styled.div<SelectDivProps>`
     left: ${props => props.x + 'px'};
 `;
 
-function imageAdjust(width: number, height: number, maxWidth: number, maxHeight: number, mode = 'cover') {
+function imageAdjust(width: number, height: number, maxWidth: number, maxHeight: number) {
     // mode 分为cover, contain, fill, none, 暂进近包含
-    let ajustedWidth = width;
-    const ajustedHeight = height;
-    if (width > height) {
-        if (width > maxWidth) {
-            ajustedWidth = maxWidth;
-        }
+    let renderWidth = maxWidth;
+    let renderHeight = maxHeight;
+    const containerRatio = maxWidth / maxHeight;
+    const imageRatio = width / height;
+    if (imageRatio > containerRatio) {
+        // 使用width
+        renderWidth = maxWidth;
+        renderHeight = maxWidth / imageRatio;
+    } else if (imageRatio < containerRatio) {
+        renderHeight = maxHeight;
+        renderWidth = maxHeight * imageRatio;
     }
+    return {width: renderWidth, height: renderHeight};
 }
 const ImageOperate = (props: {path: string}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -96,13 +102,21 @@ const ImageOperate = (props: {path: string}) => {
                 ),
             )
             .subscribe((result: any) => {
+                ctx.clearRect(400, 0, showImage.width, showImage.height);
                 const {startX, startY, event} = result;
                 const {x: currnetX, y: currentY} = convertPosition(event, canvas);
                 setSelectDivPorps(draft => {
                     draft.width = currnetX - startX;
                     draft.height = currentY - startY;
                 });
+
                 if (showImage) {
+                    const {width, height} = imageAdjust(
+                        currnetX - startX,
+                        currentY - startY,
+                        showImage.width,
+                        showImage.height,
+                    );
                     ctx.drawImage(
                         showImage,
                         startX,
@@ -111,8 +125,8 @@ const ImageOperate = (props: {path: string}) => {
                         currentY - startY,
                         400,
                         0,
-                        (currnetX - startX) * 4,
-                        (currentY - startY) * 4,
+                        width,
+                        height,
                     );
                 }
             });
@@ -125,6 +139,7 @@ const ImageOperate = (props: {path: string}) => {
         <Container>
             <SelectDiv {...selectDivPorps}></SelectDiv>
             <canvas ref={canvasRef} width={800} height={600}></canvas>
+            <div>放大鼠标选中的区域</div>
         </Container>
     );
 };
