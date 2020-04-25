@@ -9,7 +9,7 @@ export default ({partial = true, ...props}) => (
             const isActive = partial ? isPartiallyCurrent : isCurrent;
             return {
                 style: {
-                    color: isActive ? 'red' : 'blue',
+                    color: isActive ? '#1bfaad' : 'rgba(255, 255, 255, 0.8)',
                 },
             };
         }}

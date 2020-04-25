@@ -32,8 +32,10 @@ import NodeGarden from './pages/NodeGarden';
 import Segment from './pages/Segment';
 import SegmentDrag from './pages/SegmentDrag';
 import Bounce3d from './pages/Bounce3d';
+import ImageOperate from './pages/ImageOperate';
 const Route = () => (
     <Router>
+        <ImageOperate path="ImageOperate"></ImageOperate>
         <Rxjs path="rxjs"></Rxjs>
         <Rotation path="rotation" />
         <RandomBall path="RandomBall"></RandomBall>
