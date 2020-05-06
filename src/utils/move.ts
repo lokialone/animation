@@ -16,6 +16,10 @@ export function gravity(nodeA: Ball, nodeB: Ball) {
     nodeB.vy -= ay / nodeA.mass;
 }
 
+// function shake(node: Ball, range = 1) {
+//     const vx = Math.random() * range -
+// }
+
 export function rotate(x: number, y: number, sin: number, cos: number, reverse: boolean) {
     return {
         x: reverse ? x * cos + y * sin : x * cos - y * sin,

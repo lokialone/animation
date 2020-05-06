@@ -42,6 +42,10 @@ const NavConfig = [
         value: 'ImageOperate',
     },
     {
+        label: '图片拉扯形变',
+        value: 'ImageTransform',
+    },
+    {
         label: 'RandomBall',
         value: 'RandomBall',
     },
@@ -95,6 +99,10 @@ const NavConfig = [
     {
         label: '反向运动-拖拽',
         value: 'SegmentDrag',
+    },
+    {
+        label: 'TextParticles',
+        value: 'TextParticles',
     },
     {
         label: 'Test',

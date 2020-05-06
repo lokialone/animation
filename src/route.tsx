@@ -33,6 +33,8 @@ import Segment from './pages/Segment';
 import SegmentDrag from './pages/SegmentDrag';
 import Bounce3d from './pages/Bounce3d';
 import ImageOperate from './pages/ImageOperate';
+import ImageTransform from './pages/ImageTransform';
+import TextParticles from './pages/TextParticles';
 const Route = () => (
     <Router>
         <ImageOperate path="ImageOperate"></ImageOperate>
@@ -67,6 +69,8 @@ const Route = () => (
         <Segment path="Segment"></Segment>
         <SegmentDrag path="SegmentDrag"></SegmentDrag>
         <Bounce3d path="Bounce3d"></Bounce3d>
+        <ImageTransform path="ImageTransform"></ImageTransform>
+        <TextParticles path="TextParticles"></TextParticles>
         <Test path="Test"></Test>
     </Router>
 );

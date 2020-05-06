@@ -157,3 +157,8 @@ export function parseColor(color: string | number, toNumber = false): string | n
         return '';
     }
 }
+
+export function isValueEqual(args: number[]) {
+    const first = args[0];
+    return args.every(arg => Math.abs(arg - first) < Number.EPSILON);
+}

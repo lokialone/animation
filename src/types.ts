@@ -12,7 +12,14 @@ export interface BasicMoveItem {
     vy: number;
     radius?: number;
 }
-export interface Position {
+export interface Position2d {
     x: number;
     y: number;
+}
+export interface Position3d extends Position2d {
+    z: number;
+}
+
+export interface Position extends Position2d {
+    z?: number;
 }

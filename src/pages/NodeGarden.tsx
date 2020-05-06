@@ -18,7 +18,7 @@ const NodeGarden = (props: Props) => {
         if (!ctx) return;
 
         function crateNodes() {
-            const numbers = 40;
+            const numbers = 60;
             for (let i = 0; i < numbers; i++) {
                 const size = Math.random() * 0 + 2;
                 const node = new Ball(size, '#ffffff');
