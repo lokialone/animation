@@ -38,7 +38,23 @@ const Nav = styled.div`
 
 const NavConfig = [
     {
-        label: '绘制编辑图形',
+        label: '粒子动画',
+        value: 'NodeGarden',
+    },
+    {
+        label: '正向运动-行走',
+        value: 'Segment',
+    },
+    {
+        label: '反向运动-拖拽',
+        value: 'SegmentDrag',
+    },
+    {
+        label: 'TextParticles',
+        value: 'TextParticles',
+    },
+    {
+        label: '绘制编辑图形ing',
         value: 'DrawShape',
     },
     {
@@ -46,7 +62,7 @@ const NavConfig = [
         value: 'ImageOperate',
     },
     {
-        label: '图片拉扯形变',
+        label: '图片拉扯形变todo',
         value: 'ImageTransform',
     },
     {
@@ -93,20 +109,8 @@ const NavConfig = [
         value: 'PE',
     },
     {
-        label: '粒子动画',
-        value: 'NodeGarden',
-    },
-    {
-        label: '正向运动-行走',
-        value: 'Segment',
-    },
-    {
-        label: '反向运动-拖拽',
-        value: 'SegmentDrag',
-    },
-    {
-        label: 'TextParticles',
-        value: 'TextParticles',
+        label: '图片上传todo',
+        value: 'FileUpload',
     },
     {
         label: 'Test',

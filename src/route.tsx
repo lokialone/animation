@@ -36,6 +36,7 @@ import ImageOperate from './pages/ImageOperate';
 import ImageTransform from './pages/ImageTransform';
 import TextParticles from './pages/TextParticles';
 import DrawShape from './pages/DrawShape/index';
+import FileUpload from './pages/FileUpload';
 const Route = () => (
     <Router>
         <DrawShape path="DrawShape"></DrawShape>
@@ -73,6 +74,7 @@ const Route = () => (
         <Bounce3d path="Bounce3d"></Bounce3d>
         <ImageTransform path="ImageTransform"></ImageTransform>
         <TextParticles path="TextParticles"></TextParticles>
+        <FileUpload path="FileUpload"></FileUpload>
         <Test path="Test"></Test>
     </Router>
 );
