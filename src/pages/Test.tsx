@@ -1,66 +1,68 @@
 import React, {useEffect, useRef, useState, useCallback} from 'react';
-// import Arrow from '../shape/arrow';
-// import {captureMouse} from '../utils/index';
-// import raf from 'raf';
-import {Subject} from 'rxjs';
 interface Props {
     path?: string;
 }
 
+type pathMeta = [string, string, number];
+type to = [string, number];
+interface Paths {
+    [key: string]: to[];
+}
 const Test = (props: Props) => {
     /** Search base infos */
-    const [searchID, setSearchID] = useState(0);
-    const [button$] = useState(() => {
-        return new Subject<React.MouseEvent<HTMLButtonElement>>();
-    });
-    const onSearchInfos = () => {
-        console.log(searchID);
-        const fetchUrl = '/api/getSearchInfos';
-        const fetchParams = {searchID};
-        fetch(fetchUrl, {
-            method: 'POST',
-            body: JSON.stringify(fetchParams),
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.log(res);
-            });
-    };
     useEffect(() => {
-        setSearchID(searchID + 1);
-        console.log(searchID);
-        setTimeout(() => {
-            // debugger;
-            console.log(searchID);
-        }, 2000);
-        // button$.subscribe(function () {
-        //     debugger;
-        //     console.log(searchID);
-        //     onSearchInfos();
-        // });
-        return () => {
-            button$.unsubscribe();
-        };
+        const data: pathMeta[] = [
+            ['A', 'B', 3],
+            ['A', 'C', 2],
+            ['A', 'D', 6],
+            ['B', 'D', 4],
+            ['C', 'E', 4],
+            ['D', 'E', 2],
+            ['D', 'F', 3],
+            ['E', 'F', 1],
+        ];
+        function createPath(data: pathMeta[]): Paths {
+            return data.reduce((acc: Paths, current: pathMeta) => {
+                const from = current[0];
+                const to = current[1];
+                const len = current[2];
+                if (!acc[from]) acc[from] = [];
+                if (!acc[to]) acc[to] = [];
+                if (acc[from]) {
+                    acc[from].push([to, len]);
+                    acc[to].push([from, len]);
+                }
+                return acc;
+            }, {});
+        }
+
+        const graph = createPath(data);
+        function visit(from: string, to: string, route: string[] = []): any {
+            const nexts = graph[from];
+            if (from === to) {
+                route.push(from);
+                console.log('达到', route);
+                return;
+            }
+            for (let i = 0; i < nexts.length; i++) {
+                const newRoute = [...route];
+                newRoute.push(from);
+                const path = nexts[i];
+                const next = path[0];
+                if (newRoute.includes(next)) {
+                    continue;
+                }
+                visit(next, to, newRoute);
+            }
+            return;
+        }
+        visit('A', 'F');
+
+        // function addPath([]) {}
     }, []);
     /** Search info action */
 
-    return (
-        <>
-            <button
-                onClick={() => {
-                    setSearchID(searchID + 1);
-                }}>
-                button1
-            </button>
-            <button
-                onClick={e => {
-                    console.log(searchID);
-                    button$.next(e);
-                }}>
-                button2
-            </button>
-        </>
-    );
+    return <></>;
 };
 
 export default Test;

@@ -25,11 +25,11 @@ const TextParticles = (text: string, ctx: CanvasRenderingContext2D) => {
         if (imageWidth <= 0 || imageHeight <= 0) return;
         const imageData = ctx.getImageData(0, 0, imageWidth, imageHeight);
         const pixels = imageData.data;
-        for (let y = 0; y < imageHeight; y += 6) {
-            for (let x = 0; x < imageWidth; x += 6) {
+        for (let y = 0; y < imageHeight; y += 10) {
+            for (let x = 0; x < imageWidth; x += 10) {
                 const off = (y * imageWidth + x) * 4;
                 if (pixels[off + 2]) {
-                    const ball = new Ball(2);
+                    const ball = new Ball(Math.random() * 2 + 4, `hsl(${Math.ceil(Math.random() * 100)}, 100%, 60%)`);
                     ball.x = Math.random() * ctx.canvas.width;
                     ball.y = Math.random() * ctx.canvas.width;
                     ball.endX = x;
@@ -80,6 +80,7 @@ const TextParticlesWrap = (props: Props) => {
         }
         const inputOnchange$ = input$.pipe(filter(e => e.key === 'Enter')).subscribe(e => {
             window.cancelAnimationFrame(cancelAnimationId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             textParticles = TextParticles((e as any).target.value, ctx);
             draw();
         });

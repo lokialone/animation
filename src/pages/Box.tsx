@@ -17,11 +17,13 @@ const BallMoveContainer = (props: Props) => {
         const boxes: Box[] = [];
 
         function createBox() {
-            const box = new Box(
-                Math.random() * 40 + 10,
-                Math.random() * 40 + 10,
-                colors[0][Math.ceil(Math.random() * 5)],
-            );
+            const box = new Box({
+                x: 0,
+                y: 0,
+                width: Math.random() * 40 + 10,
+                height: Math.random() * 40 + 10,
+                color: colors[0][Math.ceil(Math.random() * 5)],
+            });
             box.x = Math.random() * canvas.width;
             boxes.push(box);
             return box;

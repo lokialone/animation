@@ -38,6 +38,10 @@ const Nav = styled.div`
 
 const NavConfig = [
     {
+        label: '绘制编辑图形',
+        value: 'DrawShape',
+    },
+    {
         label: '图片区域选择',
         value: 'ImageOperate',
     },

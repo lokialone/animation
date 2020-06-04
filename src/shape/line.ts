@@ -1,5 +1,4 @@
 import {BoundRect} from '../types';
-import {runInThisContext} from 'vm';
 export default class Line {
     public x: number;
     public y: number;

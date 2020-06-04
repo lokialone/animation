@@ -1,12 +1,12 @@
 import Point from './point';
-interface BoxOption {
+interface RectOption {
     x: number;
     y: number;
     width: number;
     height: number;
     color?: string;
 }
-class Box {
+class Rect {
     width: number;
     height: number;
     x: number;
@@ -18,7 +18,7 @@ class Box {
     public vx: number;
     public vy: number;
     public lineWidth: number;
-    constructor({x = 0, y = 0, width = 50, height = 50, color = '#ff0000'}: BoxOption) {
+    constructor({x = 0, y = 0, width = 50, height = 50, color = '#ff0000'}: RectOption) {
         this.width = width;
         this.height = height;
         this.x = x;
@@ -31,6 +31,10 @@ class Box {
         this.scaleY = 1;
         this.lineWidth = 1;
     }
+    // public onClick(fn) {
+    //     // console.log(fn);
+    //     // this.onC
+    // }
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -50,7 +54,6 @@ class Box {
     public stroke(context: CanvasRenderingContext2D) {
         context.save();
         this.createPath(context);
-        // context.strokeStyle = this.strokeStyle;
         context.stroke();
         context.restore();
     }
@@ -77,4 +80,4 @@ class Box {
     }
 }
 
-export default Box;
+export default Rect;

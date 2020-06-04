@@ -20,7 +20,7 @@ const NodeGarden = (props: Props) => {
         function crateNodes() {
             const numbers = 60;
             for (let i = 0; i < numbers; i++) {
-                const size = Math.random() * 0 + 2;
+                const size = Math.random() * 1 + 2;
                 const node = new Ball(size, '#ffffff');
                 node.x = Math.random() * canvas.width;
                 node.y = Math.random() * canvas.height;

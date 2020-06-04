@@ -5,6 +5,24 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Nav from './components/Nav';
 import Route from './route';
+
+function ModuleA(props: any) {
+    console.log(props);
+    return <div>pppp</div>;
+}
+class A extends React.Component {
+    constructor(props: any) {
+        super(props);
+    }
+    render() {
+        return <>hello</>;
+    }
+}
+
+function Wrapper({children}: any) {
+    console.log(children);
+    return <>{children.type({key: children.key, ...children.props, hello: 'xx'})}</>;
+}
 ReactDOM.render(
     <React.StrictMode>
         <div style={{display: 'flex'}}>

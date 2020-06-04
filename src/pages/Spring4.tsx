@@ -1,9 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import raf from 'raf';
 import Ball from '../shape/ball';
-import {Subject, fromEvent, Observable} from 'rxjs';
-import {filter, mergeMap, takeUntil, map, tap} from 'rxjs/operators';
-import {convertPosition, containPoint, captureMouse, getDirect, getDistance} from '../utils';
+import {containPoint, captureMouse} from '../utils';
 interface Props {
     path?: string;
 }

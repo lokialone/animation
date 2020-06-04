@@ -35,8 +35,10 @@ import Bounce3d from './pages/Bounce3d';
 import ImageOperate from './pages/ImageOperate';
 import ImageTransform from './pages/ImageTransform';
 import TextParticles from './pages/TextParticles';
+import DrawShape from './pages/DrawShape/index';
 const Route = () => (
     <Router>
+        <DrawShape path="DrawShape"></DrawShape>
         <ImageOperate path="ImageOperate"></ImageOperate>
         <Rxjs path="rxjs"></Rxjs>
         <Rotation path="rotation" />
