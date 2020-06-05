@@ -1,4 +1,5 @@
 import {BoundRect} from '../types';
+import Text from './text';
 interface CircleOption {
     x: number;
     y: number;
@@ -18,6 +19,7 @@ export default class Circle {
     public visible: boolean;
     public endX: number;
     public endY: number;
+    value?: string;
     constructor({x, y, radius}: CircleOption) {
         this.x = x;
         this.y = y;
@@ -32,6 +34,17 @@ export default class Circle {
         this.endX = 0;
         this.endY = 0;
         this.visible = true;
+    }
+
+    public setContent(text: string) {
+        this.value = text;
+    }
+
+    drawContent(ctx: CanvasRenderingContext2D) {
+        if (this.value) {
+            const text = new Text({x: this.x, y: this.y, value: this.value});
+            text.draw(ctx);
+        }
     }
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();

@@ -1,4 +1,5 @@
 import Point from './point';
+import Text from './text';
 interface RectOption {
     x: number;
     y: number;
@@ -12,12 +13,14 @@ class Rect {
     x: number;
     y: number;
     color: string;
+    value?: string;
     public rotation: number;
     public scaleX: number;
     public scaleY: number;
     public vx: number;
     public vy: number;
     public lineWidth: number;
+    public isHover: boolean;
     constructor({x = 0, y = 0, width = 50, height = 50, color = '#ff0000'}: RectOption) {
         this.width = width;
         this.height = height;
@@ -30,11 +33,39 @@ class Rect {
         this.scaleX = 1;
         this.scaleY = 1;
         this.lineWidth = 1;
+        this.isHover = false;
     }
     // public onClick(fn) {
     //     // console.log(fn);
     //     // this.onC
     // }
+    public setContent(text: string) {
+        this.value = text;
+    }
+
+    public getAnchor() {
+        return [
+            {
+                x: this.x + this.width / 2,
+                y: this.y + this.height,
+            },
+        ];
+    }
+
+    drawAnchor(ctx: CanvasRenderingContext2D) {
+        if (!this.isHover) return;
+        const anchors = this.getAnchor();
+        anchors.forEach(anchor => {
+            ctx.arc(anchor.x, anchor.y, 4, 0, Math.PI * 2, true);
+        });
+    }
+
+    drawContent(ctx: CanvasRenderingContext2D) {
+        if (this.value) {
+            const text = new Text({x: this.x + this.width / 2, y: this.y + this.height / 2, value: this.value});
+            text.draw(ctx);
+        }
+    }
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -54,6 +85,8 @@ class Rect {
     public stroke(context: CanvasRenderingContext2D) {
         context.save();
         this.createPath(context);
+        this.drawContent(context);
+        this.drawAnchor(context);
         context.stroke();
         context.restore();
     }

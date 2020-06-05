@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {fromEvent, Observable, Subscriber} from 'rxjs';
 import styled from '@emotion/styled';
-import {useImmer} from 'use-immer';
 import {takeUntil, mergeMap, tap, map} from 'rxjs/operators';
 import {convertPosition} from '../utils/index';
 import {Position2d} from '../types';
