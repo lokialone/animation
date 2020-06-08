@@ -6,6 +6,7 @@ import {takeUntil, mergeMap, tap, map, mapTo} from 'rxjs/operators';
 import Grid from '../../shape/grid';
 import {convertPosition} from '../../utils/index';
 import Rect from '../../shape/rect';
+import Line from './line';
 // import Circle from '../../shape/circle';
 import {useImmer} from 'use-immer';
 import drawGuideLines from '../../shape/guideline';
@@ -56,12 +57,16 @@ let inputingShape: ShapeClassType | null;
 let currentShape: ShapeClassType | null;
 const shapes: ShapeClassType[] = [];
 let dragging: ShapeClassType | null;
+let drawLineFlag = false;
+let currentLine: any = null;
 
 let draggingOffsetX: number;
 let draggingOffsetY: number;
 let _isEdit = false;
 let ctx: CanvasRenderingContext2D;
+const relationShips: Line[] = [];
 function drawAllShapes(ctx: CanvasRenderingContext2D) {
+    relationShips.forEach((line: Line) => line.draw(ctx));
     shapes.forEach((sh: ShapeClassType) => sh.stroke(ctx));
 }
 function resetCanvas() {
@@ -120,9 +125,19 @@ const DrawShape = (props: {path: string}) => {
             setEdit(false);
         });
 
-        // canvasMouseMove$.subscribe(() => {
-
-        // });
+        canvasMouseMove$.subscribe((event: any) => {
+            if (!_isEdit || dragging) return;
+            const {x, y} = convertPosition(event as MouseEvent, canvas);
+            shapes.forEach((sp: ShapeClassType) => {
+                sp.createPath(context);
+                if (context.isPointInPath(x, y)) {
+                    sp.setHoverState(true);
+                } else {
+                    sp.setHoverState(false);
+                }
+            });
+            resetCanvas();
+        });
 
         doubleClick$.subscribe((event: any) => {
             if (!_isEdit) return;
@@ -190,19 +205,42 @@ const DrawShape = (props: {path: string}) => {
             mouseDown.y = y;
         }
 
+        function drawLine(context: CanvasRenderingContext2D, x: number, y: number, sp: Rect) {
+            ctx.beginPath();
+            ctx.moveTo(mouseDown.x, mouseDown.y);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.closePath();
+            currentLine = new Line(sp, undefined, x, y);
+            currentLine.draw(context);
+        }
+
         canvasMouseDown$
             .pipe(
                 tap(event => {
                     const {x, y} = convertPosition(event as MouseEvent, canvas);
-
+                    drawLineFlag = false;
                     if (_isEdit) {
                         shapes.some((sp: ShapeClassType) => {
                             sp.createPath(context);
                             if (context.isPointInPath(x, y)) {
                                 startDragging(x, y);
-                                dragging = sp;
-                                draggingOffsetX = x - sp.x;
-                                draggingOffsetY = y - sp.y;
+                                const anchors = sp.getAnchors();
+                                const inAnchor = anchors.some(anchor => {
+                                    const {x: arx, y: ary, r} = anchor;
+                                    if (x > arx - r && x < arx + r && y < ary + r) {
+                                        return true;
+                                    }
+                                });
+                                if (!inAnchor) {
+                                    dragging = sp;
+                                    draggingOffsetX = x - sp.x;
+                                    draggingOffsetY = y - sp.y;
+                                } else {
+                                    drawLineFlag = true;
+                                    drawLine(context, x, y, sp);
+                                }
+
                                 return true;
                             }
                         });
@@ -220,6 +258,14 @@ const DrawShape = (props: {path: string}) => {
                                     } else {
                                         if (currentShape) shapes.push(currentShape);
                                     }
+                                    if (drawLineFlag) {
+                                        const {x, y} = convertPosition(event as MouseEvent, canvas);
+                                        currentLine.setDestination({x, y});
+                                        relationShips.push(currentLine);
+                                        currentLine = null;
+                                        drawLineFlag = false;
+                                        resetCanvas();
+                                    }
                                 }),
                             ),
                         ),
@@ -232,8 +278,10 @@ const DrawShape = (props: {path: string}) => {
                     if (dragging) {
                         dragging.x = x - draggingOffsetX;
                         dragging.y = y - draggingOffsetY;
+                        resetCanvas();
+                    } else if (drawLineFlag) {
+                        currentLine.drawTo(context, x, y);
                     }
-                    resetCanvas();
                 } else {
                     restoreDrawingSurface();
                     updateRubberband(x, y);

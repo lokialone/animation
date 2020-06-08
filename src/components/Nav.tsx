@@ -54,7 +54,7 @@ const NavConfig = [
         value: 'TextParticles',
     },
     {
-        label: '绘制编辑图形ing',
+        label: '绘制编辑图形doing',
         value: 'DrawShape',
     },
     {

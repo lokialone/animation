@@ -21,6 +21,7 @@ class Rect {
     public vy: number;
     public lineWidth: number;
     public isHover: boolean;
+    public anchorRadius: number;
     constructor({x = 0, y = 0, width = 50, height = 50, color = '#ff0000'}: RectOption) {
         this.width = width;
         this.height = height;
@@ -34,37 +35,52 @@ class Rect {
         this.scaleY = 1;
         this.lineWidth = 1;
         this.isHover = false;
+        this.anchorRadius = 6;
     }
-    // public onClick(fn) {
-    //     // console.log(fn);
-    //     // this.onC
-    // }
+    public onHover(fn: Function) {
+        this.setHoverState(true);
+        fn();
+    }
     public setContent(text: string) {
         this.value = text;
     }
 
-    public getAnchor() {
+    public setHoverState(state: boolean) {
+        this.isHover = state;
+    }
+
+    public getAnchors() {
         return [
             {
                 x: this.x + this.width / 2,
                 y: this.y + this.height,
+                r: this.anchorRadius,
             },
         ];
     }
 
     drawAnchor(ctx: CanvasRenderingContext2D) {
         if (!this.isHover) return;
-        const anchors = this.getAnchor();
+        ctx.save();
+        ctx.fillStyle = 'white';
+        const anchors = this.getAnchors();
+        ctx.beginPath();
         anchors.forEach(anchor => {
-            ctx.arc(anchor.x, anchor.y, 4, 0, Math.PI * 2, true);
+            ctx.arc(anchor.x, anchor.y, anchor.r, 0, Math.PI * 2, true);
         });
+        ctx.stroke();
+        ctx.fill();
+        ctx.restore();
     }
 
     drawContent(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+        ctx.strokeStyle = 'black';
         if (this.value) {
             const text = new Text({x: this.x + this.width / 2, y: this.y + this.height / 2, value: this.value});
             text.draw(ctx);
         }
+        ctx.stroke();
     }
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
@@ -76,18 +92,26 @@ class Rect {
         ctx.beginPath();
         ctx.rect(0, 0, this.width, this.height);
         ctx.fill();
-        ctx.closePath();
         if (this.lineWidth > 0) {
             ctx.stroke();
         }
+        ctx.closePath();
         ctx.restore();
     }
     public stroke(context: CanvasRenderingContext2D) {
         context.save();
         this.createPath(context);
-        this.drawContent(context);
-        this.drawAnchor(context);
+        if (this.isHover) {
+            context.shadowColor = '#00ff00';
+            context.shadowBlur = 10;
+            context.shadowOffsetX = 0;
+            context.shadowOffsetY = 0;
+        }
         context.stroke();
+        context.restore();
+        this.drawAnchor(context);
+        this.drawContent(context);
+
         context.restore();
     }
     public getPoints() {
