@@ -1,11 +1,16 @@
 import Point from './point';
 import Text from './text';
+import Line from '../pages/DrawShape/line';
 interface RectOption {
     x: number;
     y: number;
     width: number;
     height: number;
     color?: string;
+}
+interface Edge {
+    instance: Line;
+    needDraw: boolean;
 }
 class Rect {
     width: number;
@@ -22,6 +27,7 @@ class Rect {
     public lineWidth: number;
     public isHover: boolean;
     public anchorRadius: number;
+    public edges?: Edge[];
     constructor({x = 0, y = 0, width = 50, height = 50, color = '#ff0000'}: RectOption) {
         this.width = width;
         this.height = height;
