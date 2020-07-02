@@ -2,7 +2,8 @@ import Rect from '@shape/rect';
 import Grid from '@shape/grid';
 import {fromEvent, Observable, Subject, Subscriber, Subscription} from 'rxjs';
 import {convertPosition} from '@utils/index';
-import {takeUntil, mergeMap, tap, map, mapTo} from 'rxjs/operators';
+import {takeUntil, mergeMap, tap, debounceTime, map, mapTo} from 'rxjs/operators';
+import Line from './line';
 interface DraggingInfo {
     isDragging?: boolean;
     target?: Rect;
@@ -25,6 +26,9 @@ export default class Stage {
     height: number;
     drag$: Subscription;
     savedSurface?: ImageData;
+    hover$: Subscription;
+    isDraggingLine?: boolean;
+    currentLine?: Line;
     constructor(ctx: CanvasRenderingContext2D) {
         this.ctx = ctx;
         this.shapes = [];
@@ -33,8 +37,9 @@ export default class Stage {
         this.width = ctx.canvas.width;
         this.height = ctx.canvas.height;
         this._drawGrid();
-        const {drag$} = this.initListener();
+        const {drag$, hover$} = this.initListener();
         this.drag$ = drag$;
+        this.hover$ = hover$;
     }
     saveDrawIngSurface() {
         this.savedSurface = this.ctx.getImageData(0, 0, this.width, this.height);
@@ -59,18 +64,19 @@ export default class Stage {
         const windowMouseMove$ = fromEvent(window, 'mousemove');
         const windowMouseUp$ = fromEvent(window, 'mouseup');
         const canvasMouseMove$ = fromEvent(canvas, 'mousemove');
-        // canvasMouseMove$.subscribe((event: any) => {
-        //     const {x, y} = convertPosition(event as MouseEvent, canvas);
-        //     this.shapes.forEach((sp: Rect) => {
-        //         sp.createPath(this.ctx);
-        //         if (this.ctx.isPointInPath(x, y)) {
-        //             sp.setHoverState(true);
-        //         } else {
-        //             sp.setHoverState(false);
-        //         }
-        //     });
-        //     this.refresh();
-        // });
+        const hover$ = canvasMouseMove$.subscribe((event: any) => {
+            if (this.mode !== ModeType.Edit) return;
+            const {x, y} = convertPosition(event as MouseEvent, canvas);
+            this.shapes.forEach((sp: Rect) => {
+                sp.createPath(this.ctx);
+                if (this.ctx.isPointInPath(x, y)) {
+                    sp.setHoverState(true);
+                } else {
+                    sp.setHoverState(false);
+                }
+            });
+            this.refresh();
+        });
         const drag$ = canvasMouseDown$
             .pipe(
                 tap(event => {
@@ -122,7 +128,7 @@ export default class Stage {
                     }
                 }
             });
-        return {drag$};
+        return {drag$, hover$};
     }
     _drawRubberband(x: number, y: number) {
         const startX = this.draggingInfo.startX || 0;
@@ -182,7 +188,8 @@ export default class Stage {
     }
     destroy() {
         this.shapes = [];
-        this.drag$.unsubscribe();
         this.clearCanvas();
+        this.drag$.unsubscribe();
+        this.hover$.unsubscribe();
     }
 }

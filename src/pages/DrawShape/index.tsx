@@ -47,7 +47,7 @@ const ease$ = new Subject<React.MouseEvent<any>>();
 const edit$ = new Subject<React.MouseEvent<any>>();
 const create$ = new Subject<React.MouseEvent<any>>();
 let inputingShape: Rect | null;
-const DrawShape = (props: {path: string}) => {
+const DrawShape = (props: {path: string}) =>{ 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isEdit, setEdit] = useState<boolean>(false);
     const [textInputInfo, setTextInputInfo] = useImmer<TextInputInfo>({value: '', show: false, x: 0, y: 0});
