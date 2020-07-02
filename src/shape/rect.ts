@@ -81,6 +81,7 @@ class Rect {
 
     drawContent(ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
+        console.log('this.value', this.value);
         ctx.strokeStyle = 'black';
         if (this.value) {
             const text = new Text({x: this.x + this.width / 2, y: this.y + this.height / 2, value: this.value});

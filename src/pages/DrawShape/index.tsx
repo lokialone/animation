@@ -47,7 +47,8 @@ const ease$ = new Subject<React.MouseEvent<any>>();
 const edit$ = new Subject<React.MouseEvent<any>>();
 const create$ = new Subject<React.MouseEvent<any>>();
 let inputingShape: Rect | null;
-const DrawShape = (props: {path: string}) =>{ 
+let stage: Stage;
+const DrawShape = (props: {path: string}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isEdit, setEdit] = useState<boolean>(false);
     const [textInputInfo, setTextInputInfo] = useImmer<TextInputInfo>({value: '', show: false, x: 0, y: 0});
@@ -60,6 +61,7 @@ const DrawShape = (props: {path: string}) =>{
     const textInputOnKeyPress = (e: any) => {
         if (e.key === 'Enter') {
             if (isEdit && inputingShape) inputingShape.setContent(textInputInfo.value);
+            stage.refresh();
             setTextInputInfo(draft => {
                 draft.show = false;
                 draft.value = '';
@@ -71,7 +73,7 @@ const DrawShape = (props: {path: string}) =>{
         if (!canvas) return;
         const context = canvas.getContext('2d');
         if (!context) return;
-        const stage = new Stage(context);
+        stage = new Stage(context);
         const unEdit$ = edit$.subscribe(() => {
             setEdit(true);
             stage.setMode(ModeType.Edit);
@@ -82,6 +84,19 @@ const DrawShape = (props: {path: string}) =>{
         });
         const unEase$ = ease$.subscribe(() => {
             stage.reset();
+        });
+        stage.handleDoubleClick((sp: Rect) => {
+            inputingShape = sp;
+            setTextInputInfo(draft => {
+                if (inputingShape) {
+                    draft.value = inputingShape.value || '';
+                    draft.x = inputingShape.x + 10;
+                    draft.y = inputingShape.y + inputingShape.height / 2 - 10;
+                    draft.show = true;
+                } else {
+                    draft.show = false;
+                }
+            });
         });
 
         return () => {
