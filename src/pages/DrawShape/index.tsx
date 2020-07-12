@@ -119,7 +119,7 @@ const DrawShape = (props: {path: string}) => {
                     <SimpleButton onClick={e => ease$.next(e)} isActive={false}>
                         清除
                     </SimpleButton>
-                    <span style={{fontSize: '12px'}}>编辑时 1.双击可输入文字 2.可拖拽</span>
+                    <span style={{fontSize: '12px'}}>编辑时 1.双击可输入文字 2.可拖拽 3. 可连线</span>
                 </div>
                 <div></div>
                 <div style={{position: 'relative', display: 'flex'}}>

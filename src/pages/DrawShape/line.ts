@@ -1,51 +1,46 @@
 import Rect from '../../shape/rect';
 interface DestinationProp {
-    to?: Rect;
-    x?: number;
-    y?: number;
+    to: Rect;
+    anchorIndex: number;
 }
 export default class Line {
     from: Rect;
     to?: Rect;
     tmpX?: number;
     tmpY?: number;
-    anchorIndex: number;
+    fromAnchorIndex: number;
+    toAnchorIndex?: number;
     x: number;
     y: number;
-    constructor(from: Rect, to: Rect | undefined, x?: number, y?: number, anchorIndex = 0) {
+    constructor(from: Rect, anchorIndex = 0) {
         this.from = from;
-        this.to = to;
-        this.tmpX = x;
-        this.tmpY = y;
-        this.anchorIndex = anchorIndex;
-        const anchor = this.from.getAnchors()[this.anchorIndex];
+        this.fromAnchorIndex = anchorIndex;
+        const anchor = this.from.getAnchors()[anchorIndex];
         this.x = anchor.x;
         this.y = anchor.y;
     }
 
-    setDestination({to, x, y}: DestinationProp) {
-        if (to) {
-            this.to = to;
-        }
-        this.tmpX = x;
-        this.tmpY = y;
+    setDestination({to, anchorIndex}: DestinationProp) {
+        this.to = to;
+        this.toAnchorIndex = anchorIndex;
     }
     drawTo(ctx: CanvasRenderingContext2D, x: number, y: number) {
         this.drawArrowLine(ctx, this.x, this.y, x, y);
     }
     draw(ctx: CanvasRenderingContext2D) {
+        const anchor = this.from.getAnchors()[this.fromAnchorIndex || 0];
+        const fromX = anchor.x;
+        const fromY = anchor.y;
         let x = 0,
             y = 0;
         if (this.to) {
-            x = this.to.x;
-            y = this.to.y;
-        } else if (this.tmpX !== undefined && this.tmpY !== undefined) {
-            x = this.tmpX;
-            y = this.tmpY;
+            const anchor = this.to.getAnchors()[this.toAnchorIndex || 0];
+            x = anchor.x;
+            y = anchor.y;
         } else {
             throw '未指定终点';
         }
-        this.drawArrowLine(ctx, this.x, this.y, x, y);
+        this.drawArrowLine(ctx, fromX, fromY, x, y);
     }
 
     drawArrowLine(

@@ -99,7 +99,6 @@ class Rect {
 
     drawContent(ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
-        console.log('this.value', this.value);
         ctx.strokeStyle = 'black';
         if (this.value) {
             const text = new Text({x: this.x + this.width / 2, y: this.y + this.height / 2, value: this.value});
@@ -160,44 +159,83 @@ class Rect {
         }
         context.closePath();
     }
-
-    public creatHoverPath(ctx: CanvasRenderingContext2D) {
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        //top
-        ctx.lineTo(this.x + this.width / 2 - this.anchorRadius, this.y);
-        ctx.arc(this.x + this.width / 2, this.y, this.anchorRadius, Math.PI, 0, false);
-        ctx.moveTo(this.x + this.width / 2 + this.anchorRadius, this.y);
-        ctx.lineTo(this.x + this.width, this.y);
-        // right
-        ctx.lineTo(this.x + this.width, this.y + this.height / 2 - this.anchorRadius);
-        ctx.arc(
-            this.x + this.width,
-            this.y + this.height / 2,
-            this.anchorRadius,
-            (3 * Math.PI) / 2,
-            Math.PI / 2,
-            false,
-        );
-        ctx.lineTo(this.x + this.width, this.y + this.height);
-        // bottom
-        ctx.lineTo(this.x + this.width / 2 + this.anchorRadius, this.y + this.height);
-        ctx.arc(this.x + this.width / 2, this.y + this.height, this.anchorRadius, Math.PI * 2, Math.PI, false);
-        ctx.lineTo(this.x, this.y + this.height);
-        // left
-        ctx.lineTo(this.x, this.y + this.height / 2 + this.anchorRadius);
-        ctx.arc(this.x, this.y + this.height / 2, this.anchorRadius, (Math.PI * 1) / 2, (3 * Math.PI) / 2, false);
-        ctx.lineTo(this.x, this.y);
-    }
+    //包含锚点的路径绘制
+    // public creatHoverPath(ctx: CanvasRenderingContext2D) {
+    //     ctx.beginPath();
+    //     ctx.moveTo(this.x, this.y);
+    //     //top
+    //     ctx.lineTo(this.x + this.width / 2 - this.anchorRadius, this.y);
+    //     ctx.arc(this.x + this.width / 2, this.y, this.anchorRadius, Math.PI, 0, false);
+    //     ctx.moveTo(this.x + this.width / 2 + this.anchorRadius, this.y);
+    //     ctx.lineTo(this.x + this.width, this.y);
+    //     // right
+    //     ctx.lineTo(this.x + this.width, this.y + this.height / 2 - this.anchorRadius);
+    //     ctx.arc(
+    //         this.x + this.width,
+    //         this.y + this.height / 2,
+    //         this.anchorRadius,
+    //         (3 * Math.PI) / 2,
+    //         Math.PI / 2,
+    //         false,
+    //     );
+    //     ctx.lineTo(this.x + this.width, this.y + this.height);
+    //     // bottom
+    //     ctx.lineTo(this.x + this.width / 2 + this.anchorRadius, this.y + this.height);
+    //     ctx.arc(this.x + this.width / 2, this.y + this.height, this.anchorRadius, Math.PI * 2, Math.PI, false);
+    //     ctx.lineTo(this.x, this.y + this.height);
+    //     // left
+    //     ctx.lineTo(this.x, this.y + this.height / 2 + this.anchorRadius);
+    //     ctx.arc(this.x, this.y + this.height / 2, this.anchorRadius, (Math.PI * 1) / 2, (3 * Math.PI) / 2, false);
+    //     ctx.lineTo(this.x, this.y);
+    // }
 
     public isIntersecting(context: CanvasRenderingContext2D, x: number, y: number) {
-        if (this.isHover) {
-            this.creatHoverPath(context);
-            return context.isPointInPath(x, y);
+        this.createPath(context);
+
+        if (!this.isHover) {
+            if (context.isPointInPath(x, y)) {
+                return {
+                    isIntersecting: true,
+                    isInBody: true,
+                    isInAchor: false,
+                    anchorIndex: 0,
+                };
+            }
+            return {
+                isIntersecting: false,
+                isInBody: false,
+                isInAchor: false,
+                anchorIndex: 0,
+            };
         } else {
-            this.createPath(context);
-            return context.isPointInPath(x, y);
+            const anchors = this.getAnchors();
+            for (let i = 0; i < anchors.length; i++) {
+                const anchor = anchors[i];
+                if (Math.sqrt(Math.pow(x - anchor.x, 2) + Math.pow(y - anchor.y, 2)) < anchor.r) {
+                    return {
+                        isIntersecting: true,
+                        isInBody: false,
+                        isInAchor: true,
+                        anchorIndex: i,
+                    };
+                }
+            }
+            if (context.isPointInPath(x, y)) {
+                return {
+                    isIntersecting: true,
+                    isInBody: true,
+                    isInAchor: false,
+                    anchorIndex: 0,
+                };
+            }
         }
+
+        return {
+            isIntersecting: false,
+            isInBody: false,
+            isInAchor: false,
+            anchorIndex: 0,
+        };
     }
 }
 

@@ -67,9 +67,9 @@ export default class Stage {
             const {x, y} = convertPosition(event as MouseEvent, this.ctx.canvas);
             // let currentHoverState: Rect;
             this.shapes.forEach((sp: Rect) => {
-                if (sp.isIntersecting(this.ctx, x, y)) {
+                const {isIntersecting} = sp.isIntersecting(this.ctx, x, y);
+                if (isIntersecting) {
                     sp.setHoverState(true);
-                    //    currentHoverState[]
                 } else {
                     sp.setHoverState(false);
                 }
@@ -138,25 +138,38 @@ export default class Stage {
         let offsetY = 0;
         let target: Rect | undefined;
         let line: Line;
-        const drawLine = false;
+        let drawLine = false;
         const drag$ = this.canvasMouseDown$
             .pipe(
                 tap(event => {
                     const {x, y} = convertPosition(event as MouseEvent, this.ctx.canvas);
-                    const sp = this.getSeletedShape(x, y);
-                    if (sp) {
+                    const {shape, isInAchor, anchorIndex, isInBody} = this.getSeletedShape(x, y);
+
+                    if (shape && isInBody) {
+                        target = shape;
                         this.saveDrawIngSurface();
-                        offsetX = sp.x - x;
-                        offsetY = sp.y - y;
-                        target = sp;
+                        offsetX = shape.x - x;
+                        offsetY = shape.y - y;
+                    } else if (shape && isInAchor) {
+                        drawLine = true;
+                        target = shape;
+                        this.saveDrawIngSurface();
+                        line = new Line(shape, anchorIndex || 0);
                     }
                 }),
                 mergeMap(() =>
                     this.windowMouseMove$.pipe(
                         takeUntil(
                             this.windowMouseUp$.pipe(
-                                tap(() => {
+                                tap(event => {
+                                    const {x, y} = convertPosition(event as MouseEvent, this.ctx.canvas);
+                                    const {shape, isInAchor, anchorIndex} = this.getSeletedShape(x, y);
+                                    if (shape && isInAchor) {
+                                        line.setDestination({to: shape, anchorIndex: anchorIndex || 0});
+                                        this.edges.push(line);
+                                    }
                                     target = undefined;
+                                    drawLine = false;
                                 }),
                             ),
                         ),
@@ -170,13 +183,14 @@ export default class Stage {
                     target.y = y + offsetY;
                     this.refresh();
                 } else if (drawLine) {
+                    line.drawTo(this.ctx, x, y);
                 }
             });
         const input$ = this.canvasdblclick$.subscribe(event => {
             const {x, y} = convertPosition(event as MouseEvent, this.ctx.canvas);
             this.shapes.some((sp: Rect) => {
-                sp.createPath(this.ctx);
-                if (this.ctx.isPointInPath(x, y)) {
+                const {isInBody} = sp.isIntersecting(this.ctx, x, y);
+                if (isInBody) {
                     this.inputCallback.forEach(fn => fn(sp));
                     return true;
                 }
@@ -199,11 +213,25 @@ export default class Stage {
         const length = this.shapes.length;
         for (let i = 0; i < length; i++) {
             const sp = this.shapes[i];
-            sp.createPath(this.ctx);
-            if (this.ctx.isPointInPath(x, y)) {
-                return sp;
+            const {isInBody, isInAchor, anchorIndex} = sp.isIntersecting(this.ctx, x, y);
+            if (isInAchor) {
+                return {
+                    shape: sp,
+                    isInAchor: isInAchor,
+                    isInBody,
+                    anchorIndex,
+                };
+            }
+            if (isInBody) {
+                return {
+                    shape: sp,
+                    isInBody,
+                    isInAchor,
+                    anchorIndex,
+                };
             }
         }
+        return {shape: null};
     }
     add(shape: Rect) {
         this.shapes.push(shape);
@@ -243,7 +271,6 @@ export default class Stage {
         this._drawGrid();
         this._drawShapes();
         this._dragEdges();
-        console.log('refres', this.shapes);
     }
     _drawGrid() {
         const grid = new Grid(0, 0, 10, 10, this.width, this.height);
