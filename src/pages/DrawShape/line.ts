@@ -1,5 +1,5 @@
 import Rect from '../../shape/rect';
-interface destinationProp {
+interface DestinationProp {
     to?: Rect;
     x?: number;
     y?: number;
@@ -23,7 +23,7 @@ export default class Line {
         this.y = anchor.y;
     }
 
-    setDestination({to, x, y}: destinationProp) {
+    setDestination({to, x, y}: DestinationProp) {
         if (to) {
             this.to = to;
         }

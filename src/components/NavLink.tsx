@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from '@reach/router';
 
-export default ({partial = true, ...props}) => (
+export default ({partial = false, ...props}) => (
     <Link
         {...props}
         to={props.to}

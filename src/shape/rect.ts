@@ -59,7 +59,22 @@ class Rect {
         return [
             {
                 x: this.x + this.width / 2,
+                y: this.y,
+                r: this.anchorRadius,
+            },
+            {
+                x: this.x + this.width,
+                y: this.y + this.height / 2,
+                r: this.anchorRadius,
+            },
+            {
+                x: this.x + this.width / 2,
                 y: this.y + this.height,
+                r: this.anchorRadius,
+            },
+            {
+                x: this.x,
+                y: this.y + this.height / 2,
                 r: this.anchorRadius,
             },
         ];
@@ -70,12 +85,15 @@ class Rect {
         ctx.save();
         ctx.fillStyle = 'white';
         const anchors = this.getAnchors();
-        ctx.beginPath();
+
         anchors.forEach(anchor => {
+            ctx.beginPath();
             ctx.arc(anchor.x, anchor.y, anchor.r, 0, Math.PI * 2, true);
+            ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
         });
-        ctx.stroke();
-        ctx.fill();
+
         ctx.restore();
     }
 
@@ -108,6 +126,7 @@ class Rect {
     public stroke(context: CanvasRenderingContext2D) {
         context.save();
         this.createPath(context);
+        // this.creatHoverPath(context);
         if (this.isHover) {
             context.shadowColor = '#00ff00';
             context.shadowBlur = 10;
@@ -139,8 +158,46 @@ class Rect {
         for (let i = 1; i < 4; ++i) {
             context.lineTo(points[i].x, points[i].y);
         }
-
         context.closePath();
+    }
+
+    public creatHoverPath(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        //top
+        ctx.lineTo(this.x + this.width / 2 - this.anchorRadius, this.y);
+        ctx.arc(this.x + this.width / 2, this.y, this.anchorRadius, Math.PI, 0, false);
+        ctx.moveTo(this.x + this.width / 2 + this.anchorRadius, this.y);
+        ctx.lineTo(this.x + this.width, this.y);
+        // right
+        ctx.lineTo(this.x + this.width, this.y + this.height / 2 - this.anchorRadius);
+        ctx.arc(
+            this.x + this.width,
+            this.y + this.height / 2,
+            this.anchorRadius,
+            (3 * Math.PI) / 2,
+            Math.PI / 2,
+            false,
+        );
+        ctx.lineTo(this.x + this.width, this.y + this.height);
+        // bottom
+        ctx.lineTo(this.x + this.width / 2 + this.anchorRadius, this.y + this.height);
+        ctx.arc(this.x + this.width / 2, this.y + this.height, this.anchorRadius, Math.PI * 2, Math.PI, false);
+        ctx.lineTo(this.x, this.y + this.height);
+        // left
+        ctx.lineTo(this.x, this.y + this.height / 2 + this.anchorRadius);
+        ctx.arc(this.x, this.y + this.height / 2, this.anchorRadius, (Math.PI * 1) / 2, (3 * Math.PI) / 2, false);
+        ctx.lineTo(this.x, this.y);
+    }
+
+    public isIntersecting(context: CanvasRenderingContext2D, x: number, y: number) {
+        if (this.isHover) {
+            this.creatHoverPath(context);
+            return context.isPointInPath(x, y);
+        } else {
+            this.createPath(context);
+            return context.isPointInPath(x, y);
+        }
     }
 }
 

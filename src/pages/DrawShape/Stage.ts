@@ -4,14 +4,6 @@ import {fromEvent, Observable, Subject, Subscriber, Subscription} from 'rxjs';
 import {convertPosition} from '@utils/index';
 import {takeUntil, mergeMap, tap, debounceTime, map, mapTo} from 'rxjs/operators';
 import Line from './line';
-interface DraggingInfo {
-    isDragging?: boolean;
-    target?: Rect;
-    offsetX?: number;
-    offsetY?: number;
-    startX?: number;
-    startY?: number;
-}
 export enum ModeType {
     Edit,
     Create,
@@ -19,6 +11,7 @@ export enum ModeType {
 export default class Stage {
     ctx: CanvasRenderingContext2D;
     shapes: Rect[];
+    edges: Line[];
     mode: ModeType;
     width: number;
     height: number;
@@ -51,6 +44,7 @@ export default class Stage {
         const {create$} = this.initModeListener(ModeType.Create);
         this.hover$ = this.initHoverListener();
         this.create$ = create$;
+        this.edges = [];
         this.inputCallback = [];
     }
 
@@ -67,17 +61,20 @@ export default class Stage {
     }
 
     initHoverListener() {
-        const hover$ = this.canvasMouseMove$.pipe(debounceTime(100)).subscribe((event: any) => {
+        // const hoverStateCache = new WeakMap();
+        const hover$ = this.canvasMouseMove$.subscribe((event: any) => {
             if (this.mode !== ModeType.Edit) return;
             const {x, y} = convertPosition(event as MouseEvent, this.ctx.canvas);
+            // let currentHoverState: Rect;
             this.shapes.forEach((sp: Rect) => {
-                sp.createPath(this.ctx);
-                if (this.ctx.isPointInPath(x, y)) {
+                if (sp.isIntersecting(this.ctx, x, y)) {
                     sp.setHoverState(true);
+                    //    currentHoverState[]
                 } else {
                     sp.setHoverState(false);
                 }
             });
+            // if ()
             this.refresh();
         });
         return hover$;
@@ -140,6 +137,8 @@ export default class Stage {
         let offsetX = 0;
         let offsetY = 0;
         let target: Rect | undefined;
+        let line: Line;
+        const drawLine = false;
         const drag$ = this.canvasMouseDown$
             .pipe(
                 tap(event => {
@@ -166,10 +165,11 @@ export default class Stage {
             )
             .subscribe(event => {
                 const {x, y} = convertPosition(event as MouseEvent, this.ctx.canvas);
-                if (target) {
+                if (target && !drawLine) {
                     target.x = x + offsetX;
                     target.y = y + offsetY;
                     this.refresh();
+                } else if (drawLine) {
                 }
             });
         const input$ = this.canvasdblclick$.subscribe(event => {
@@ -192,7 +192,6 @@ export default class Stage {
         } else {
             edit$ = this.createEditModeListener();
         }
-
         return {create$, edit$};
     }
 
@@ -234,6 +233,7 @@ export default class Stage {
         this.clearCanvas();
         this._drawGrid();
         this.shapes = [];
+        this.edges = [];
     }
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -242,6 +242,7 @@ export default class Stage {
         this.clearCanvas();
         this._drawGrid();
         this._drawShapes();
+        this._dragEdges();
         console.log('refres', this.shapes);
     }
     _drawGrid() {
@@ -251,6 +252,11 @@ export default class Stage {
     _drawShapes() {
         this.shapes.forEach((sh: Rect) => sh.stroke(this.ctx));
     }
+
+    _dragEdges() {
+        this.edges.forEach((sh: Line) => sh.draw(this.ctx));
+    }
+
     destroy() {
         this.shapes = [];
         this.clearCanvas();
