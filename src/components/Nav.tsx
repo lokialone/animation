@@ -54,7 +54,7 @@ const NavConfig = [
         value: 'TextParticles',
     },
     {
-        label: '绘制编辑图形doing',
+        label: '绘制编辑图形',
         value: 'DrawShape',
     },
     {
@@ -64,6 +64,10 @@ const NavConfig = [
     {
         label: '图片拉扯形变todo',
         value: 'ImageTransform',
+    },
+    {
+        label: '图片转场动效',
+        value: 'ImageFade',
     },
     {
         label: 'RandomBall',

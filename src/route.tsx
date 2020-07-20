@@ -37,10 +37,12 @@ import ImageTransform from './pages/ImageTransform';
 import TextParticles from './pages/TextParticles';
 import DrawShape from './pages/DrawShape/index';
 import FileUpload from './pages/FileUpload';
+import ImageFade from './pages/ImageFade';
 const Route = () => (
     <Router>
         <DrawShape path="DrawShape"></DrawShape>
         <ImageOperate path="ImageOperate"></ImageOperate>
+        <ImageFade path="ImageFade"></ImageFade>
         <Rxjs path="rxjs"></Rxjs>
         <Rotation path="rotation" />
         <RandomBall path="RandomBall"></RandomBall>
