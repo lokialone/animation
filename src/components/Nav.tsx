@@ -38,6 +38,10 @@ const Nav = styled.div`
 
 const NavConfig = [
     {
+        label: '帧动画',
+        value: 'Sprite',
+    },
+    {
         label: '粒子动画',
         value: 'NodeGarden',
     },

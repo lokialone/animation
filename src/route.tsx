@@ -38,8 +38,10 @@ import TextParticles from './pages/TextParticles';
 import DrawShape from './pages/DrawShape/index';
 import FileUpload from './pages/FileUpload';
 import ImageFade from './pages/ImageFade';
+import Sprite from './pages/Sprite';
 const Route = () => (
     <Router>
+        <Sprite path="Sprite"></Sprite>
         <DrawShape path="DrawShape"></DrawShape>
         <ImageOperate path="ImageOperate"></ImageOperate>
         <ImageFade path="ImageFade"></ImageFade>
