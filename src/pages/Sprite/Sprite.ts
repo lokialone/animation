@@ -22,6 +22,7 @@ export default class Sprite {
     speed: number;
     radiusX: number;
     radiusY :number;
+    rotate: number;
     constructor(canvas: HTMLCanvasElement, opts: Partial<SpriteOption>) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
@@ -42,9 +43,10 @@ export default class Sprite {
             width: opts.width || 0, // 画布宽度
             height: opts.height || 0, // 画屏高度
             sprite: opts.sprite,
-            x: opts.x || 0,
-            y: opts.y || 0
+            x: opts.x || 100,
+            y: opts.y || 100
         }
+        this.rotate = 0;
         this.turnFlag = false;
         this.options.width = Math.min(this.canvas.width, this.options.sprite.width);
         this.options.height = Math.min(this.canvas.height, this.options.sprite.height);
@@ -55,12 +57,21 @@ export default class Sprite {
     public render() {
         if (!this.ctx) throw Error('no context');
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.save();
         const spriteWidth = this.options.sprite.width;
         const spriteHeight = this.options.sprite.height;
-        const frameHeight =  spriteHeight / this.options.numberOfFrames;
+        const frameHeight = spriteHeight / this.options.numberOfFrames;
+        this.ctx.translate(this.options.x + spriteWidth / 2, this.options.y + frameHeight / 2);
+        if ((this.options.x + spriteWidth / 2 > this.canvas.width)&& !this.turnFlag) {
+            this.turnFlag = true;
+        }
+        if(this.turnFlag) {
+            this.ctx.rotate(this.rotate * Math.PI/180);
+        }
         // 核心绘制代码，主要使用了 canvas.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) API
         this.ctx.drawImage(this.options.sprite, 
-            0, this.options.frameIndex * frameHeight, spriteWidth, frameHeight , this.options.x, this.options.y, spriteWidth, frameHeight );
+            0, this.options.frameIndex * frameHeight, spriteWidth, frameHeight , -this.options.x, -this.options.y, spriteWidth, frameHeight );
+        this.ctx.restore();
     }
     public updateFrame() {
         this.options.tickCount++;
@@ -77,15 +88,14 @@ export default class Sprite {
     public beginTurn() {
         
     }
+
     public updatePostion() {
-        this.options.x = this.canvas.width / 2 + Math.sin(this.angle) * this.radiusX;
-        this.options.y = this.canvas.height / 2 + Math.cos(this.angle) * this.radiusY;
-        this.angle += this.speed;
+        // this.options.x++;
     }
 
     public update() {
         if (!this.ctx) throw Error('no context');
-        // this.ctx.rotate(10);
+        this.rotate += 0.1;
         this.updatePostion();
         this.updateFrame();
 

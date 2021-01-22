@@ -15,7 +15,7 @@ const Sprite = (props: {path: string}) => {
                 sprite: image,
                 loop: true,
                 numberOfFrames: 12,
-                ticksPerFrame: 12
+                ticksPerFrame: 12,
             });
             function drawFrame() {
                 spriteFrame.render();

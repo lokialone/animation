@@ -38,6 +38,10 @@ const Nav = styled.div`
 
 const NavConfig = [
     {
+        label: 'Webgl',
+        value: 'Webgl',
+    },
+    {
         label: '帧动画',
         value: 'Sprite',
     },
