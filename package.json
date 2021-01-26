@@ -30,22 +30,11 @@
     }
   },
   "lint-staged": {
-    "*.{.ts,.tsx}": [
-      "eslint",
-      "git add"
-    ]
+    "*.{.ts,.tsx}": ["eslint", "git add"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "devDependencies": {
     "@types/node": "^12.12.31",
@@ -67,13 +56,14 @@
     "typescript": "^3.8.3"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
+  },
+  "aljkProcode": {
+    "disabled": true,
+    "srcDirName": "",
+    "materialsDirName": ""
   }
 }
