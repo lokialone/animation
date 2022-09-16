@@ -39,10 +39,11 @@ import DrawShape from './pages/DrawShape/index';
 import FileUpload from './pages/FileUpload';
 import ImageFade from './pages/ImageFade';
 import Sprite from './pages/Sprite';
-import Webgl from './pages/Webgl/index';
+import Ocean from './pages/Webgl/Ocean';
 const Route = () => (
     <Router>
-        <Webgl path="Webgl"></Webgl>
+        <Ocean path="/"></Ocean>
+        <Ocean path="/Ocean"></Ocean>
         <Sprite path="Sprite"></Sprite>
         <DrawShape path="DrawShape"></DrawShape>
         <ImageOperate path="ImageOperate"></ImageOperate>

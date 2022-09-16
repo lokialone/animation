@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {fromEvent} from 'rxjs';
-import {delay, map, throttleTime} from 'rxjs/operators';
+import {delay, map} from 'rxjs/operators';
 import styled from '@emotion/styled';
 interface Props {
     path?: string;
