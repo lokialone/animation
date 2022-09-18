@@ -1,8 +1,12 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import FragmentShader from './shader/fragment.glsl';
+import vertexShader from './shader/vertex.glsl';
+
 interface OceanOption {
     container: HTMLElement;
 }
+
 export default class Ocean {
     public width: number;
     public height: number;
@@ -12,8 +16,13 @@ export default class Ocean {
     renderer!: THREE.WebGLRenderer;
     controls!: OrbitControls;
     mesh!: THREE.Mesh;
+    material!: THREE.Material;
+    uniforms: {
+        value: number;
+    };
     constructor(options: OceanOption) {
         const {container} = options;
+        this.uniforms = {value: 1.0};
         this.container = container;
         this.width = container.offsetWidth;
         this.height = container.offsetHeight;
@@ -39,8 +48,20 @@ export default class Ocean {
     }
 
     addObjects() {
-        const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-        const material = new THREE.MeshNormalMaterial();
+        const geometry = new THREE.PlaneGeometry(1, 1);
+        // const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        // const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                time: {
+                    value: Number,
+                },
+            },
+            side: THREE.DoubleSide,
+            vertexShader: vertexShader,
+            fragmentShader: FragmentShader,
+        });
+
         this.mesh = new THREE.Mesh(geometry, material);
         this.scene.add(this.mesh);
     }
@@ -52,6 +73,7 @@ export default class Ocean {
         this.mesh.rotation.x = time / 2000;
         this.mesh.rotation.y = time / 1000;
         this.controls.update();
+        // (this.mesh.material as THREE.ShaderMaterial).uniforms = {time: time as any};
         this.renderer.render(this.scene, this.camera);
     }
 

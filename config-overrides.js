@@ -1,4 +1,4 @@
-const {override, disableEsLint, overrideDevServer, watchAll, addWebpackAlias} = require('customize-cra');
+const {override, addWebpackModuleRule, overrideDevServer, watchAll, addWebpackAlias} = require('customize-cra');
 const path = require('path');
 module.exports = {
     webpack: override(
@@ -8,6 +8,7 @@ module.exports = {
             '@hook': path.resolve(__dirname, './src/hook'),
             '@component': path.resolve(__dirname, './src/component'),
         }),
+        addWebpackModuleRule({test: /\.glsl$/, use: 'raw-loader'}),
     ),
     // usual webpack plugin
     // disableEsLint(),

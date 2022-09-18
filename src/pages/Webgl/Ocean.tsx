@@ -1,5 +1,4 @@
 import React, {useRef, useEffect} from 'react';
-import styled from '@emotion/styled';
 import Ocean from './Ocean.class';
 import './ocean.style.css';
 
