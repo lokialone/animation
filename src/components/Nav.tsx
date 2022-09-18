@@ -15,7 +15,8 @@ const move = keyframes`
 const Nav = styled.div`
     width: 200px;
     background: #31445b;
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
     li {
         height: 30px;
         line-height: 30px;

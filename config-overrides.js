@@ -8,7 +8,7 @@ module.exports = {
             '@hook': path.resolve(__dirname, './src/hook'),
             '@component': path.resolve(__dirname, './src/component'),
         }),
-        addWebpackModuleRule({test: /\.glsl$/, use: 'raw-loader'}),
+        addWebpackModuleRule({test: /\.glsl$/, use: 'ts-shader-loader'}),
     ),
     // usual webpack plugin
     // disableEsLint(),

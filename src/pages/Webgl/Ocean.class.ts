@@ -38,7 +38,7 @@ export default class Ocean {
         this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 10);
         this.camera.position.z = 1;
         this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer({antialias: true});
+        this.renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
         this.renderer.setSize(this.width, this.height);
         this.renderer.render(this.scene, this.camera);
         // add controls
@@ -48,18 +48,14 @@ export default class Ocean {
     }
 
     addObjects() {
-        const geometry = new THREE.PlaneGeometry(1, 1);
+        const geometry = new THREE.PlaneGeometry(0.5, 0.5, 10, 10);
         // const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         // const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
         const material = new THREE.ShaderMaterial({
-            uniforms: {
-                time: {
-                    value: Number,
-                },
-            },
             side: THREE.DoubleSide,
             vertexShader: vertexShader,
             fragmentShader: FragmentShader,
+            wireframe: true,
         });
 
         this.mesh = new THREE.Mesh(geometry, material);
@@ -70,10 +66,9 @@ export default class Ocean {
     }
 
     animation(time: number) {
-        this.mesh.rotation.x = time / 2000;
-        this.mesh.rotation.y = time / 1000;
+        // this.mesh.rotation.x = time / 2000;
+        // this.mesh.rotation.y = time / 1000;
         this.controls.update();
-        // (this.mesh.material as THREE.ShaderMaterial).uniforms = {time: time as any};
         this.renderer.render(this.scene, this.camera);
     }
 

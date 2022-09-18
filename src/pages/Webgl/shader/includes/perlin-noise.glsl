@@ -72,8 +72,3 @@ float cnoise(vec3 P){
   float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
   return 2.2 * n_xyz;
 }
-void main() {
-    vec3 newPosition = position;
-    newPosition.z += 0.1*cnoise(vec3(position.x * 4.0, position.y* 4.0, 0.0));
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-}
