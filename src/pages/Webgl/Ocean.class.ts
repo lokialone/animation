@@ -21,29 +21,34 @@ export default class Ocean {
     uniforms: {
         value: number;
     };
+    meshes!: THREE.Mesh[];
+    left: number;
     constructor(options: OceanOption) {
         const {container} = options;
         this.uniforms = {value: 1.0};
         this.container = container;
         this.width = container.offsetWidth;
         this.height = container.offsetHeight;
+        this.left = container.offsetLeft;
+        console.log(this.container);
+        console.log(this.width, this.height);
+        this.meshes = [];
         imagesloaded(document.querySelectorAll('img'), () => {
             this.init();
             // this.resize();
             // this.addObjects();
-
             this.addImages();
             this.render();
             // this.run();
             // this.setUpResize();
         });
     }
-
     init() {
         // init camera
-        this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 500, 2000);
+        const fov = (2 * Math.atan(this.height / 2 / 600) * 180) / Math.PI;
+        this.camera = new THREE.PerspectiveCamera(fov, this.width / this.height, 100, 2000);
         this.camera.position.z = 600;
-        this.camera.fov = (2 * Math.atan(this.height / 2 / 600) * 180) / Math.PI;
+        this.camera.fov = fov;
         this.scene = new THREE.Scene();
         this.renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
         this.renderer.setSize(this.width, this.height);
@@ -56,16 +61,23 @@ export default class Ocean {
         const images = document.querySelectorAll('img');
         images.forEach(img => {
             const bounds = img.getBoundingClientRect();
-            console.log('bounds: ', bounds);
             const geometry = new THREE.PlaneGeometry(bounds.width, bounds.height, 10, 10);
             const material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
             const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.x = bounds.left + bounds.width / 2 - this.width / 2 - this.left;
+            mesh.position.y = this.height / 2 - bounds.top - bounds.height / 2;
             this.scene.add(mesh);
+            this.meshes.push(mesh);
+            // return {
+            //     mesh: mesh
+            //     img: img,
+
+            // }
         });
     }
 
     addObjects() {
-        const geometry = new THREE.PlaneGeometry(200, 200, 10, 10);
+        const geometry = new THREE.PlaneGeometry(984, 200, 10, 10);
         // const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         // const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
         const material = new THREE.ShaderMaterial({
