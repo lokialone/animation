@@ -3,9 +3,17 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import FragmentShader from './shader/fragment.glsl';
 import vertexShader from './shader/vertex.glsl';
 import imagesloaded from 'imagesloaded';
-
+// import Scroll from '@utils/scroll.js';
 interface OceanOption {
     container: HTMLElement;
+}
+interface ImageMesh {
+    mesh: THREE.Mesh;
+    width: number;
+    height: number;
+    left: number;
+    top: number;
+    img: HTMLImageElement;
 }
 export default class Ocean {
     public width: number;
@@ -20,7 +28,7 @@ export default class Ocean {
     uniforms: {
         value: number;
     };
-    meshes!: THREE.Mesh[];
+    meshes!: ImageMesh[];
     left: number;
     scrollTop: number;
     constructor(options: OceanOption) {
@@ -34,17 +42,19 @@ export default class Ocean {
         console.log(this.width, this.height);
         this.meshes = [];
         this.scrollTop = 0;
-        window.addEventListener('scroll', (event: Event) => {
-            console.log('Event: ', event);
-            // this.scrollTop = event.scrollTop;
-        });
+
         imagesloaded(document.querySelectorAll('img'), () => {
             this.init();
             // this.resize();
             // this.addObjects();
             this.addImages();
+            this.setImagePosition();
             this.render();
-            // this.run();
+            this.run();
+            window.addEventListener('scroll', () => {
+                this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                console.log(this.scrollTop);
+            });
             // this.setUpResize();
         });
     }
@@ -69,20 +79,27 @@ export default class Ocean {
             const geometry = new THREE.PlaneGeometry(bounds.width, bounds.height, 10, 10);
             const material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
             const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.x = bounds.left + bounds.width / 2 - this.width / 2 - this.left;
-            mesh.position.y = this.height / 2 - bounds.top - bounds.height / 2;
+
             this.scene.add(mesh);
-            this.meshes.push(mesh);
-            return {
+            this.meshes.push({
                 mesh: mesh,
                 img: img,
-            };
+                left: bounds.left,
+                width: bounds.width,
+                height: bounds.height,
+                top: bounds.top,
+            });
+            return;
+        });
+    }
+    setImagePosition() {
+        this.meshes.forEach((mesh: ImageMesh) => {
+            mesh.mesh.position.x = mesh.left + mesh.width / 2 - this.width / 2 - this.left;
+            mesh.mesh.position.y = this.scrollTop + this.height / 2 - mesh.top - mesh.height / 2;
         });
     }
     addObjects() {
         const geometry = new THREE.PlaneGeometry(984, 200, 10, 10);
-        // const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-        // const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
         const material = new THREE.ShaderMaterial({
             side: THREE.DoubleSide,
             vertexShader: vertexShader,
@@ -102,7 +119,9 @@ export default class Ocean {
     animation(time: number) {
         // this.mesh.rotation.x = time / 2000;
         // this.mesh.rotation.y = time / 1000;
-        this.controls.update();
+        // this.scrollTop = this.scroll.scrollToRender;
+        this.setImagePosition();
+        // this.controls.update();
         this.renderer.render(this.scene, this.camera);
     }
 
