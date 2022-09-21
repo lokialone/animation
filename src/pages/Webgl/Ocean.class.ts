@@ -7,7 +7,6 @@ import imagesloaded from 'imagesloaded';
 interface OceanOption {
     container: HTMLElement;
 }
-
 export default class Ocean {
     public width: number;
     public height: number;
@@ -23,6 +22,7 @@ export default class Ocean {
     };
     meshes!: THREE.Mesh[];
     left: number;
+    scrollTop: number;
     constructor(options: OceanOption) {
         const {container} = options;
         this.uniforms = {value: 1.0};
@@ -33,6 +33,11 @@ export default class Ocean {
         console.log(this.container);
         console.log(this.width, this.height);
         this.meshes = [];
+        this.scrollTop = 0;
+        window.addEventListener('scroll', (event: Event) => {
+            console.log('Event: ', event);
+            // this.scrollTop = event.scrollTop;
+        });
         imagesloaded(document.querySelectorAll('img'), () => {
             this.init();
             // this.resize();
@@ -68,14 +73,12 @@ export default class Ocean {
             mesh.position.y = this.height / 2 - bounds.top - bounds.height / 2;
             this.scene.add(mesh);
             this.meshes.push(mesh);
-            // return {
-            //     mesh: mesh
-            //     img: img,
-
-            // }
+            return {
+                mesh: mesh,
+                img: img,
+            };
         });
     }
-
     addObjects() {
         const geometry = new THREE.PlaneGeometry(984, 200, 10, 10);
         // const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
@@ -86,7 +89,6 @@ export default class Ocean {
             fragmentShader: FragmentShader,
             wireframe: true,
         });
-
         this.mesh = new THREE.Mesh(geometry, material);
         this.scene.add(this.mesh);
     }
