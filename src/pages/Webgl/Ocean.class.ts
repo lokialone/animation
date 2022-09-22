@@ -31,6 +31,7 @@ export default class Ocean {
     meshes!: ImageMesh[];
     left: number;
     scrollTop: number;
+    images: HTMLImageElement[];
     constructor(options: OceanOption) {
         const {container} = options;
         this.uniforms = {value: 1.0};
@@ -42,8 +43,15 @@ export default class Ocean {
         console.log(this.width, this.height);
         this.meshes = [];
         this.scrollTop = 0;
+        this.images = [...document.querySelectorAll('img')];
 
-        imagesloaded(document.querySelectorAll('img'), () => {
+        // Preload images
+        const preloadImages = new Promise((resolve, reject) => {
+            imagesloaded(document.querySelectorAll('img'), {background: true}, resolve);
+        });
+
+        const allDone = [preloadImages];
+        Promise.all(allDone).then(() => {
             this.init();
             // this.resize();
             // this.addObjects();
@@ -55,12 +63,11 @@ export default class Ocean {
                 this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 console.log(this.scrollTop);
             });
-            // this.setUpResize();
         });
     }
     init() {
         // init camera
-        const fov = (2 * Math.atan(this.height / 2 / 600) * 180) / Math.PI;
+        const fov = 2 * Math.atan(this.height / 2 / 600) * (180 / Math.PI);
         this.camera = new THREE.PerspectiveCamera(fov, this.width / this.height, 100, 2000);
         this.camera.position.z = 600;
         this.camera.fov = fov;
@@ -73,11 +80,25 @@ export default class Ocean {
         this.container.appendChild(this.renderer.domElement);
     }
     addImages() {
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
+        this.images.forEach(img => {
             const bounds = img.getBoundingClientRect();
             const geometry = new THREE.PlaneGeometry(bounds.width, bounds.height, 10, 10);
-            const material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+            // const texture = new THREE.Texture(img);
+            // texture.needsUpdate = true;
+            // ShaderMaterial;
+            const material = new THREE.ShaderMaterial({
+                side: THREE.DoubleSide,
+                uniforms: {
+                    uImage: {
+                        value: new THREE.TextureLoader().load(img.src),
+                        // value: texture,
+                    },
+                },
+                // color: 'red',
+                vertexShader: vertexShader,
+                fragmentShader: FragmentShader,
+                // wireframe: true,
+            });
             const mesh = new THREE.Mesh(geometry, material);
 
             this.scene.add(mesh);
@@ -97,17 +118,6 @@ export default class Ocean {
             mesh.mesh.position.x = mesh.left + mesh.width / 2 - this.width / 2 - this.left;
             mesh.mesh.position.y = this.scrollTop + this.height / 2 - mesh.top - mesh.height / 2;
         });
-    }
-    addObjects() {
-        const geometry = new THREE.PlaneGeometry(984, 200, 10, 10);
-        const material = new THREE.ShaderMaterial({
-            side: THREE.DoubleSide,
-            vertexShader: vertexShader,
-            fragmentShader: FragmentShader,
-            wireframe: true,
-        });
-        this.mesh = new THREE.Mesh(geometry, material);
-        this.scene.add(this.mesh);
     }
     run() {
         this.renderer.setAnimationLoop(this.animation.bind(this));

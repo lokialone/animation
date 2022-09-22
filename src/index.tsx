@@ -10,9 +10,7 @@ ReactDOM.render(
     <React.StrictMode>
         <div style={{display: 'flex'}}>
             <Nav></Nav>
-            <div style={{flex: 1}}>
-                <Route />
-            </div>
+            <Route />
         </div>
     </React.StrictMode>,
     document.getElementById('root'),

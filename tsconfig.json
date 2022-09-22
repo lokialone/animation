@@ -6,7 +6,8 @@
     "jsx": "react",
     "lib": [
       "dom",
-      "esnext"
+      "esnext",
+      "DOM.Iterable"
     ],
     "strict": true,
     "noEmit": true,

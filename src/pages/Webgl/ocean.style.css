@@ -8,7 +8,7 @@
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    /* font-family: 'Open Sans', sans-serif; */
 }
 .page {
     width: min(90%, 1200px);
@@ -39,7 +39,7 @@ header img {
 }
 h1,
 h2 {
-    font-family: 'Playfair Display', serif;
+    /* font-family: 'Playfair Display', serif; */
     font-weight: normal;
 }
 
@@ -66,7 +66,7 @@ h2 {
 .item img {
     width: 100%;
     display: block;
-    /* opacity: 0; */
+    opacity: 0;
 }
 .item__image {
     position: relative;
