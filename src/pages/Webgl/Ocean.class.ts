@@ -3,7 +3,7 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import FragmentShader from './shader/fragment.glsl';
 import vertexShader from './shader/vertex.glsl';
 import imagesloaded from 'imagesloaded';
-// import Scroll from '@utils/scroll.js';
+import Scroll from '@utils/scroll.js';
 interface OceanOption {
     container: HTMLElement;
 }
@@ -16,8 +16,8 @@ interface ImageMesh {
     img: HTMLImageElement;
 }
 export default class Ocean {
-    public width: number;
-    public height: number;
+    public width!: number;
+    public height!: number;
     public container: HTMLElement;
     public camera!: THREE.PerspectiveCamera;
     scene!: THREE.Scene;
@@ -29,41 +29,44 @@ export default class Ocean {
         value: number;
     };
     meshes!: ImageMesh[];
-    left: number;
-    scrollTop: number;
-    images: HTMLImageElement[];
+    left!: number;
+    scrollTop!: number;
+    images!: HTMLImageElement[];
+    scroll!: {
+        render: () => void;
+        scrollToRender: number;
+    };
+    pointer!: THREE.Vector2;
+    raycaster!: THREE.Raycaster;
     constructor(options: OceanOption) {
         const {container} = options;
         this.uniforms = {value: 1.0};
         this.container = container;
-        this.width = container.offsetWidth;
-        this.height = container.offsetHeight;
-        this.left = container.offsetLeft;
-        console.log(this.container);
-        console.log(this.width, this.height);
-        this.meshes = [];
-        this.scrollTop = 0;
-        this.images = [...document.querySelectorAll('img')];
-
-        // Preload images
         const preloadImages = new Promise((resolve, reject) => {
             imagesloaded(document.querySelectorAll('img'), {background: true}, resolve);
         });
-
         const allDone = [preloadImages];
         Promise.all(allDone).then(() => {
-            this.init();
-            // this.resize();
-            // this.addObjects();
-            this.addImages();
-            this.setImagePosition();
-            this.render();
-            this.run();
-            window.addEventListener('scroll', () => {
-                this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                console.log(this.scrollTop);
-            });
+            this.sceneRrender();
         });
+        this.setUpResize();
+        this.setUpMouseMoveListener();
+    }
+    sceneRrender() {
+        this.width = this.container.offsetWidth;
+        this.height = this.container.offsetHeight;
+        this.left = this.container.offsetLeft;
+        this.meshes = [];
+        this.scrollTop = 0;
+        this.images = [...document.querySelectorAll('img')];
+        this.init();
+
+        // this.addObjects();
+        this.addImages();
+        this.setImagePosition();
+        this.render();
+        this.run();
+        // Preload images
     }
     init() {
         // init camera
@@ -77,6 +80,7 @@ export default class Ocean {
         // add controls
         // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         // this.controls.update();
+        this.scroll = new Scroll();
         this.container.appendChild(this.renderer.domElement);
     }
     addImages() {
@@ -92,6 +96,9 @@ export default class Ocean {
                     uImage: {
                         value: new THREE.TextureLoader().load(img.src),
                         // value: texture,
+                    },
+                    hover: {
+                        value: 0,
                     },
                 },
                 // color: 'red',
@@ -127,11 +134,9 @@ export default class Ocean {
     }
 
     animation(time: number) {
-        // this.mesh.rotation.x = time / 2000;
-        // this.mesh.rotation.y = time / 1000;
-        // this.scrollTop = this.scroll.scrollToRender;
+        this.scroll.render();
+        this.scrollTop = this.scroll.scrollToRender;
         this.setImagePosition();
-        // this.controls.update();
         this.renderer.render(this.scene, this.camera);
     }
 
@@ -140,12 +145,36 @@ export default class Ocean {
             this.resize();
         });
     }
+
+    setUpMouseMoveListener() {
+        this.raycaster = new THREE.Raycaster();
+        this.pointer = new THREE.Vector2();
+        const onPointerMove = (event: MouseEvent) => {
+            // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
+
+            this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            // 设置相交
+            this.raycaster.setFromCamera(this.pointer, this.camera);
+
+            // 计算物体和射线的焦点
+            const intersects = this.raycaster.intersectObjects(this.scene.children);
+
+            for (let i = 0; i < intersects.length; i++) {
+                ((intersects[i].object as THREE.Mesh).material as THREE.ShaderMaterial).uniforms.hover.value =
+                    intersects[i].uv;
+            }
+        };
+
+        window.addEventListener('pointermove', onPointerMove);
+    }
     resize() {
-        this.width = this.container.offsetWidth;
-        this.height = this.container.offsetHeight;
-        this.camera.aspect = this.width / this.height;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(this.width, this.height);
+        // this.width = this.container.offsetWidth;
+        // this.height = this.container.offsetHeight;
+        // this.sceneRrender();
+        // this.camera.aspect = this.width / this.height;
+        // this.camera.updateProjectionMatrix();
+        // this.renderer.setSize(this.width, this.height);
     }
     destroy() {
         window.removeEventListener('resize', () => {

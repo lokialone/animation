@@ -38,8 +38,10 @@ export default class Scroll {
 
     style() {
         this.DOM.main.style.position = 'fixed';
-        this.DOM.main.style.width = this.DOM.main.style.height = '100%';
-        this.DOM.main.style.top = this.DOM.main.style.left = 0;
+        // this.DOM.main.style.width =
+        this.DOM.main.style.height = '100%';
+        this.DOM.main.style.left = 200;
+        this.DOM.main.style.top = 0;
         this.DOM.main.style.overflow = 'hidden';
     }
 
@@ -73,6 +75,7 @@ export default class Scroll {
         this.speedTarget += (this.speed - this.speedTarget) * 0.2;
 
         this.current = this.getScroll();
+
         this.scrollToRender = lerp(this.scrollToRender, this.current, this.ease);
 
         // and translate the scrollable element

@@ -26,7 +26,7 @@ const OceanPage = (props: {path: string}) => {
                             <img src="img/header.jpg" alt="" />
                         </header>
                         <div className="grid">
-                            <a href="https://www.livescience.com/octopuses-punch-fish.html" className="item item_v">
+                            <a className="item item_v">
                                 <div className="item__image">
                                     <img src="img/1.jpg" alt="" />
                                     <div className="item__meta">December 23, 2020</div>
@@ -38,9 +38,7 @@ const OceanPage = (props: {path: string}) => {
                                     (for the fish, that is).
                                 </p>
                             </a>
-                            <a
-                                href="https://www.livescience.com/balloon-like-comb-jelly-discovered-puerto-rico.html"
-                                className="item item_h">
+                            <a className="item item_h">
                                 <div className="item__image">
                                     <img src="img/2.jpg" alt="" />
                                     <div className="item__meta">December 01, 2020</div>
@@ -54,9 +52,7 @@ const OceanPage = (props: {path: string}) => {
                                     alone.
                                 </p>
                             </a>
-                            <a
-                                href="https://www.livescience.com/largest-recorded-swarm-of-deep-sea-fish.html"
-                                className="item item_h">
+                            <a className="item item_h">
                                 <div className="item__image">
                                     <img src="img/4.jpg" alt="" />
                                     <div className="item__meta">November 26, 2020</div>
@@ -68,9 +64,7 @@ const OceanPage = (props: {path: string}) => {
                                     try switching on the light first and observing our surroundings.
                                 </p>
                             </a>
-                            <a
-                                href="https://www.livescience.com/mantis-shrimp-property-wars.html"
-                                className="item item_v">
+                            <a className="item item_v">
                                 <div className="item__image">
                                     <img src="img/3.jpg" alt="" />
                                     <div className="item__meta">November 03, 2020</div>
@@ -79,9 +73,7 @@ const OceanPage = (props: {path: string}) => {
                                 <h2 className="item__title">Mantis shrimp punch down</h2>
                                 <p>Home-stealers fought the hardest for smaller-than-ideal dens.</p>
                             </a>
-                            <a
-                                href="https://www.livescience.com/megalodon-big-for-a-shark.html"
-                                className="item item_v">
+                            <a className="item item_v">
                                 <div className="item__image">
                                     <img src="img/1.jpg" alt="" />
                                     <div className="item__meta">October 05, 2020</div>
@@ -90,7 +82,7 @@ const OceanPage = (props: {path: string}) => {
                                 <h2 className="item__title">Megalodon's hugeness</h2>
                                 <p>Even among its extinct relatives, Megalodon was unequalled in length and mass.</p>
                             </a>
-                            <a href="https://www.livescience.com/tiny-sunfish-larva.html" className="item item_h">
+                            <a className="item item_h">
                                 <div className="item__image">
                                     <img src="img/2.jpg" alt="" />
                                     <div className="item__meta">July 27, 2020</div>
@@ -99,9 +91,7 @@ const OceanPage = (props: {path: string}) => {
                                 <h2 className="item__title">Adorable sunfish</h2>
                                 <p>Sunfish in the Molidae family are among the biggest fish in the world.</p>
                             </a>
-                            <a
-                                href="https://www.livescience.com/supergiant-isopod-newfound-species.html"
-                                className="item item_h">
+                            <a className="item item_h">
                                 <div className="item__image">
                                     <img src="img/4.jpg" alt="" />
                                     <div className="item__meta">August 18, 2020</div>
@@ -110,7 +100,7 @@ const OceanPage = (props: {path: string}) => {
                                 <h2 className="item__title">Massive 'Darth Vader' sea bug</h2>
                                 <p>The newly described species is one of the biggest isopods known to science.</p>
                             </a>
-                            <a href="https://www.livescience.com/worlds-deepest-octopus.html" className="item item_v">
+                            <a className="item item_v">
                                 <div className="item__image">
                                     <img src="img/3.jpg" alt="" />
                                     <div className="item__meta">June 01, 2020</div>
@@ -126,9 +116,9 @@ const OceanPage = (props: {path: string}) => {
                             </p>
                             <p>
                                 This page was made for{' '}
-                                <a href="https://www.awwwards.com/academy/course/merging-webgl-and-html-worlds">
+                                {/* <a href="https://www.awwwards.com/academy/course/merging-webgl-and-html-worlds">
                                     Merging WebGL and HTML course on Awwwards.com
-                                </a>
+                                </a> */}
                                 <br />
                                 Wish you a good day! =)
                             </p>
@@ -136,7 +126,7 @@ const OceanPage = (props: {path: string}) => {
                     </div>
                 </div>
             </main>
-            <div ref={ref} className="webgl-ocean"></div>;
+            <div ref={ref} className="webgl-ocean"></div>
         </>
     );
 };
