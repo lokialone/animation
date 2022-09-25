@@ -98,7 +98,7 @@ export default class Ocean {
                         // value: texture,
                     },
                     hover: {
-                        value: 0,
+                        value: new THREE.Vector2(0.5, 0.5),
                     },
                 },
                 // color: 'red',
@@ -152,20 +152,20 @@ export default class Ocean {
         const onPointerMove = (event: MouseEvent) => {
             // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
 
-            this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.pointer.x = ((event.clientX - this.left) / (window.innerWidth - this.left)) * 2 - 1;
             this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            console.log(event.clientX, this.left);
             // 设置相交
             this.raycaster.setFromCamera(this.pointer, this.camera);
 
             // 计算物体和射线的焦点
             const intersects = this.raycaster.intersectObjects(this.scene.children);
-
-            for (let i = 0; i < intersects.length; i++) {
-                ((intersects[i].object as THREE.Mesh).material as THREE.ShaderMaterial).uniforms.hover.value =
-                    intersects[i].uv;
+            if (intersects.length) {
+                console.log(intersects[0]);
+                ((intersects[0].object as THREE.Mesh).material as THREE.ShaderMaterial).uniforms.hover.value =
+                    intersects[0].uv;
             }
         };
-
         window.addEventListener('pointermove', onPointerMove);
     }
     resize() {

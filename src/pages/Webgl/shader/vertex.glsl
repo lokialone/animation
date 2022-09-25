@@ -5,6 +5,8 @@ vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
 vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
 varying vec2 vUv;
+uniform vec2 hover;
+varying float vNoise;
 
 float cnoise(vec3 P){
   vec3 Pi0 = floor(P); // Integer part for indexing
@@ -76,6 +78,8 @@ float cnoise(vec3 P){
 void main() {
     vec3 newPosition = position;
     vUv = uv;
-    // newPosition.z += 0.1*cnoise(vec3(position.x * 4.0, position.y* 4.0, 0.0));
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    float dist = distance(uv, hover);
+    vNoise = dist;
+    // newPosition.z += 10.0 * sin(dist * 10.);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 }
