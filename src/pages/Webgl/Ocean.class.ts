@@ -4,6 +4,7 @@ import FragmentShader from './shader/fragment.glsl';
 import vertexShader from './shader/vertex.glsl';
 import imagesloaded from 'imagesloaded';
 import Scroll from '@utils/scroll.js';
+import gsap from 'gsap';
 interface OceanOption {
     container: HTMLElement;
 }
@@ -38,6 +39,7 @@ export default class Ocean {
     };
     pointer!: THREE.Vector2;
     raycaster!: THREE.Raycaster;
+    time: number;
     constructor(options: OceanOption) {
         const {container} = options;
         this.uniforms = {value: 1.0};
@@ -49,6 +51,7 @@ export default class Ocean {
         Promise.all(allDone).then(() => {
             this.sceneRrender();
         });
+        this.time = 0;
         this.setUpResize();
         this.setUpMouseMoveListener();
     }
@@ -100,12 +103,29 @@ export default class Ocean {
                     hover: {
                         value: new THREE.Vector2(0.5, 0.5),
                     },
+                    time: {
+                        value: 0,
+                    },
+                    hoverState: {value: 0},
                 },
                 // color: 'red',
                 vertexShader: vertexShader,
                 fragmentShader: FragmentShader,
                 // wireframe: true,
             });
+            img.addEventListener('mouseenter', () => {
+                gsap.to(material.uniforms.hoverState, {
+                    duration: 1,
+                    value: 1,
+                });
+            });
+            img.addEventListener('mouseout', () => {
+                gsap.to(material.uniforms.hoverState, {
+                    duration: 1,
+                    value: 0,
+                });
+            });
+
             const mesh = new THREE.Mesh(geometry, material);
 
             this.scene.add(mesh);
@@ -136,6 +156,13 @@ export default class Ocean {
     animation(time: number) {
         this.scroll.render();
         this.scrollTop = this.scroll.scrollToRender;
+        //  this.materials.forEach(m => {
+        //      m.uniforms.time.value = this.time;
+        //  });
+        this.time += 0.05;
+        this.meshes.forEach(m => {
+            (m.mesh.material as THREE.ShaderMaterial).uniforms.time.value = this.time;
+        });
         this.setImagePosition();
         this.renderer.render(this.scene, this.camera);
     }
