@@ -8,13 +8,14 @@ const NavConfig = [
     //     value: 'Sprite',
     // },
     {
-        label: 'ocean-webgl',
+        label: 'ocean-webgl-wave',
         value: 'Ocean',
     },
     {
-        label: '多物体弹动',
-        value: 'Spring3',
+        label: '图片粒子动画',
+        value: ' ParticleImage',
     },
+
     {
         label: '正向运动-行走',
         value: 'Segment',
@@ -23,22 +24,27 @@ const NavConfig = [
         label: '反向运动-拖拽',
         value: 'SegmentDrag',
     },
+
     {
-        label: '粒子动画',
-        value: 'NodeGarden',
+        label: '多物体弹动',
+        value: 'Spring3',
     },
     {
-        label: 'TextParticles',
+        label: '文字粒子动画',
         value: 'TextParticles',
     },
     {
-        label: '绘制编辑图形',
-        value: 'DrawShape',
+        label: '粒子动画-easy',
+        value: 'NodeGarden',
     },
-    {
-        label: '图片区域选择',
-        value: 'ImageOperate',
-    },
+    // {
+    //     label: '绘制编辑图形',
+    //     value: 'DrawShape',
+    // },
+    // {
+    //     label: '图片区域选择',
+    //     value: 'ImageOperate',
+    // },
     // {
     //     label: '图片拉扯形变todo',
     //     value: 'ImageTransform',

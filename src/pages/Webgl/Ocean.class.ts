@@ -44,12 +44,17 @@ export default class Ocean {
         const {container} = options;
         this.uniforms = {value: 1.0};
         this.container = container;
+        this.images = [...document.querySelectorAll('img')];
+        // this.images.shift();
         const preloadImages = new Promise((resolve, reject) => {
             imagesloaded(document.querySelectorAll('img'), {background: true}, resolve);
         });
         const allDone = [preloadImages];
         Promise.all(allDone).then(() => {
             this.sceneRrender();
+            this.images.forEach(img => {
+                // img.style.opacity = '0';
+            });
         });
         this.time = 0;
         this.setUpResize();
@@ -61,7 +66,7 @@ export default class Ocean {
         this.left = this.container.offsetLeft;
         this.meshes = [];
         this.scrollTop = 0;
-        this.images = [...document.querySelectorAll('img')];
+
         this.init();
 
         // this.addObjects();
@@ -87,7 +92,7 @@ export default class Ocean {
         this.container.appendChild(this.renderer.domElement);
     }
     addImages() {
-        this.images.forEach(img => {
+        this.images.forEach((img, index) => {
             const bounds = img.getBoundingClientRect();
             const geometry = new THREE.PlaneGeometry(bounds.width, bounds.height, 10, 10);
             // const texture = new THREE.Texture(img);
@@ -106,7 +111,7 @@ export default class Ocean {
                     time: {
                         value: 0,
                     },
-                    hoverState: {value: 0},
+                    hoverState: {value: index === 0 ? 1 : 0},
                 },
                 // color: 'red',
                 vertexShader: vertexShader,
@@ -156,9 +161,6 @@ export default class Ocean {
     animation(time: number) {
         this.scroll.render();
         this.scrollTop = this.scroll.scrollToRender;
-        //  this.materials.forEach(m => {
-        //      m.uniforms.time.value = this.time;
-        //  });
         this.time += 0.05;
         this.meshes.forEach(m => {
             (m.mesh.material as THREE.ShaderMaterial).uniforms.time.value = this.time;

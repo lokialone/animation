@@ -40,6 +40,7 @@ import FileUpload from './pages/FileUpload';
 import ImageFade from './pages/ImageFade';
 import Sprite from './pages/Sprite';
 import Ocean from './pages/Webgl/Ocean';
+import ParticleImage from './pages/Particles/ParticleImage';
 const Route = () => (
     <Router>
         <Ocean path="/"></Ocean>
@@ -83,6 +84,7 @@ const Route = () => (
         <TextParticles path="TextParticles"></TextParticles>
         <FileUpload path="FileUpload"></FileUpload>
         <Test path="Test"></Test>
+        <ParticleImage path="ParticleImage"></ParticleImage>
     </Router>
 );
 export default Route;
