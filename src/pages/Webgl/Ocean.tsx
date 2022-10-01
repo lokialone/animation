@@ -22,7 +22,7 @@ const OceanPage = (props: {path: string}) => {
                 <div data-scroll>
                     <div className="page">
                         <header>
-                            <h1>Oceans</h1>
+                            {/* <h1>Oceans</h1> */}
                             <img src="img/header.jpg" alt="" />
                         </header>
                         <div>以下图片鼠标移动图片出现动画</div>

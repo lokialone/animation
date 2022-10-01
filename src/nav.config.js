@@ -13,7 +13,7 @@ const NavConfig = [
     },
     {
         label: '图片粒子动画',
-        value: ' ParticleImage',
+        value: 'ParticleImage',
     },
 
     {
@@ -34,7 +34,7 @@ const NavConfig = [
         value: 'TextParticles',
     },
     {
-        label: '粒子动画-easy',
+        label: '粒子动画-nodeGarden',
         value: 'NodeGarden',
     },
     // {

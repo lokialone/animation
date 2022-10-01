@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import raf from 'raf';
+import {Particle, Effect} from './basic/Particle';
 interface Props {
     path?: string;
 }
@@ -11,6 +12,14 @@ const PariicleImage = (props: Props) => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
+        const effect = new Effect(ctx);
+        function render() {
+            ctx!.clearRect(0, 0, canvas.width, canvas.height);
+            effect.update();
+            effect.draw();
+            raf(render);
+        }
+        render();
 
         // return () => {};
     }, []);
