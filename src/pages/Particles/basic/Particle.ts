@@ -3,16 +3,18 @@ export class Particle {
     orignY: number;
     size: number;
     ease: number;
-    constructor(public x: number, public y: number, public effect: Effect) {
+    constructor(public x: number, public y: number, public effect: Effect, public color: string) {
         this.orignX = x;
         this.orignY = y;
-        this.x = 0;
-        this.y = 0;
+        this.x = Math.random() * this.effect.width;
+        this.y = Math.random() * this.effect.height;
         this.effect = effect;
         this.size = effect.gap;
-        this.ease = 0.02;
+        this.ease = 0.04;
+        this.color = color;
     }
     draw() {
+        this.effect.ctx.fillStyle = this.color;
         this.effect.ctx.fillRect(this.x, this.y, this.size, this.size);
     }
     update() {
@@ -27,16 +29,31 @@ export class Effect {
     width: number;
     height: number;
     constructor(public ctx: CanvasRenderingContext2D) {
-        this.gap = 4;
+        this.gap = 3;
         this.particles = [];
         this.width = ctx.canvas.width;
         this.height = ctx.canvas.height;
         this.init();
     }
     init() {
-        for (let i = 0; i < 1000; i++) {
-            const particle = new Particle(Math.random() * this.width, Math.random() * this.height, this);
-            this.particles.push(particle);
+        const image = document.getElementById('fish');
+        this.ctx.drawImage(image as HTMLImageElement, this.width / 2 - 150, this.height / 2 - 150, 300, 300);
+        const imageData = this.ctx.getImageData(0, 0, this.width, this.height);
+        for (let i = 0; i < this.height; i += this.gap) {
+            for (let j = 0; j < this.width; j += this.gap) {
+                const index = (this.width * i + j) * 4;
+                const r = imageData.data[index];
+                const g = imageData.data[index + 1];
+                const b = imageData.data[index + 2];
+                const a = imageData.data[index + 3];
+                if (a) {
+                    const color = `rgb(
+                        ${r},
+                        ${g},
+                        ${b})`;
+                    this.particles.push(new Particle(j, i, this, color));
+                }
+            }
         }
     }
     draw() {
