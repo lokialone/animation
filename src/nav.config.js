@@ -34,7 +34,7 @@ const NavConfig = [
         value: 'TextParticles',
     },
     {
-        label: '粒子动画-nodeGarden',
+        label: 'nodeGarden',
         value: 'NodeGarden',
     },
     // {

@@ -3,6 +3,10 @@ export class Particle {
     orignY: number;
     size: number;
     ease: number;
+    force: number;
+    vx: number;
+    vy: number;
+    friction: number;
     constructor(public x: number, public y: number, public effect: Effect, public color: string) {
         this.orignX = x;
         this.orignY = y;
@@ -10,16 +14,39 @@ export class Particle {
         this.y = Math.random() * this.effect.height;
         this.effect = effect;
         this.size = effect.gap;
-        this.ease = 0.04;
+        this.ease = 0.06;
         this.color = color;
+        this.force = 0;
+        this.vx = 0;
+        this.vy = 0;
+        this.friction = 0.85;
     }
     draw() {
         this.effect.ctx.fillStyle = this.color;
         this.effect.ctx.fillRect(this.x, this.y, this.size, this.size);
     }
     update() {
-        this.x += (this.orignX - this.x) * this.ease;
-        this.y += (this.orignY - this.y) * this.ease;
+        if (this.effect.mouseInfo) {
+            const x0 = this.effect.mouseInfo.x;
+            const y0 = this.effect.mouseInfo.y;
+            const distance = Math.sqrt(Math.pow(x0 - this.x, 2) + Math.pow(y0 - this.y, 2));
+            this.force = 50 / distance;
+            if (distance < 50) {
+                const angle = Math.atan2(y0 - this.y, x0 - this.x);
+                const dx = Math.cos(angle);
+                const dy = Math.sin(angle);
+                this.vx -= dx * this.force;
+                this.vy -= dy * this.force;
+            }
+        }
+        this.vx *= this.friction;
+        this.vy *= this.friction;
+        this.x += this.vx + (this.orignX - this.x) * this.ease;
+        this.y += this.vy + (this.orignY - this.y) * this.ease;
+    }
+    reset() {
+        this.x = Math.random() * this.effect.width;
+        this.y = Math.random() * this.effect.height;
     }
 }
 
@@ -28,12 +55,31 @@ export class Effect {
     particles: Particle[];
     width: number;
     height: number;
+    mouseInfo?: {
+        x: number;
+        y: number;
+    };
+    offsetLeft: number;
+    offsetTop: number;
     constructor(public ctx: CanvasRenderingContext2D) {
         this.gap = 3;
         this.particles = [];
         this.width = ctx.canvas.width;
         this.height = ctx.canvas.height;
+        this.offsetLeft = ctx.canvas.offsetLeft;
+        this.offsetTop = ctx.canvas.offsetTop;
         this.init();
+        console.log('xxx--->', ctx.canvas.offsetLeft);
+        window.addEventListener('mousemove', this.eventListener.bind(this));
+    }
+    eventListener(event: MouseEvent) {
+        // this.mouseInfo = event.
+        // console.log(event.x);
+        // console.log(this.offsetLeft, this.offsetTop);
+        this.mouseInfo = {
+            x: event.x - this.offsetLeft,
+            y: event.y - this.offsetTop,
+        };
     }
     init() {
         const image = document.getElementById('fish');
@@ -65,5 +111,13 @@ export class Effect {
         this.particles.forEach(particle => {
             particle.update();
         });
+    }
+    reset() {
+        this.particles.forEach(particle => {
+            particle.reset();
+        });
+    }
+    destroy() {
+        window.removeEventListener('mousemove', this.eventListener);
     }
 }

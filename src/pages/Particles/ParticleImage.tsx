@@ -4,7 +4,7 @@ import {Effect} from './basic/Particle';
 interface Props {
     path?: string;
 }
-
+let EffectRef: Effect;
 const PariicleImage = (props: Props) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
@@ -13,6 +13,7 @@ const PariicleImage = (props: Props) => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
         const effect = new Effect(ctx);
+        EffectRef = effect;
         function render() {
             ctx!.clearRect(0, 0, canvas.width, canvas.height);
             effect.update();
@@ -27,8 +28,13 @@ const PariicleImage = (props: Props) => {
     return (
         <>
             <div>
-                <button> repaint </button>
-                <button> print </button>
+                <button
+                    onClick={() => {
+                        EffectRef && EffectRef.reset();
+                    }}>
+                    repaint
+                </button>
+                {/* <button> print </button> */}
             </div>
             <img
                 id="fish"
