@@ -19,7 +19,7 @@ export class Particle {
         this.force = 0;
         this.vx = 0;
         this.vy = 0;
-        this.friction = 0.85;
+        this.friction = 0.9;
     }
     draw() {
         this.effect.ctx.fillStyle = this.color;
@@ -30,8 +30,8 @@ export class Particle {
             const x0 = this.effect.mouseInfo.x;
             const y0 = this.effect.mouseInfo.y;
             const distance = Math.sqrt(Math.pow(x0 - this.x, 2) + Math.pow(y0 - this.y, 2));
-            this.force = 50 / distance;
-            if (distance < 50) {
+            this.force = 80 / distance;
+            if (distance < 80) {
                 const angle = Math.atan2(y0 - this.y, x0 - this.x);
                 const dx = Math.cos(angle);
                 const dy = Math.sin(angle);
@@ -50,6 +50,10 @@ export class Particle {
     reset() {
         this.x = Math.random() * this.effect.width;
         this.y = Math.random() * this.effect.height;
+    }
+    blocks() {
+        this.x = Math.random() * this.effect.width;
+        this.y = Math.random() > 0.5 ? 0 : this.effect.height;
     }
 }
 
@@ -119,6 +123,11 @@ export class Effect {
     print() {
         this.particles.forEach(particle => {
             particle.print();
+        });
+    }
+    blocks() {
+        this.particles.forEach(particle => {
+            particle.blocks();
         });
     }
     destroy() {
