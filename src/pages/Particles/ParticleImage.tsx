@@ -1,9 +1,19 @@
 import React, {useState, useRef, useEffect} from 'react';
 import raf from 'raf';
 import {Effect} from './basic/Particle';
+import styled from '@emotion/styled';
 interface Props {
     path?: string;
 }
+const Button = styled.div`
+    background: black;
+    color: white;
+    display: inline-block;
+    font-weight: 800;
+    padding: 10px;
+    font-size: 30px;
+    margin: 20px;
+`;
 let EffectRef: Effect;
 const PariicleImage = (props: Props) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -22,19 +32,32 @@ const PariicleImage = (props: Props) => {
         }
         render();
 
-        // return () => {};
+        return () => {
+            effect.destroy();
+        };
     }, []);
 
     return (
         <>
             <div>
-                <button
+                <Button
                     onClick={() => {
                         EffectRef && EffectRef.reset();
                     }}>
                     repaint
-                </button>
-                {/* <button> print </button> */}
+                </Button>
+                <Button
+                    onClick={() => {
+                        // EffectRef && EffectRef.blocks();
+                    }}>
+                    print
+                </Button>
+                <Button
+                    onClick={() => {
+                        EffectRef && EffectRef.print();
+                    }}>
+                    print
+                </Button>
             </div>
             <img
                 id="fish"

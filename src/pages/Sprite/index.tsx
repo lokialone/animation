@@ -20,15 +20,16 @@ const Sprite = (props: {path: string}) => {
             function drawFrame() {
                 spriteFrame.render();
                 spriteFrame.update();
-                raf(drawFrame)
+                raf(drawFrame);
             }
             drawFrame();
         };
-        
     }, []);
-    return (<>
-        <canvas ref={canvasRef} width={800} height={600}></canvas>
-    </>)
+    return (
+        <>
+            <canvas ref={canvasRef} width={800} height={600}></canvas>
+        </>
+    );
 };
 
 export default Sprite;

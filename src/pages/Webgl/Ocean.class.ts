@@ -40,6 +40,7 @@ export default class Ocean {
     pointer!: THREE.Vector2;
     raycaster!: THREE.Raycaster;
     time: number;
+    onPointerMove!: (event: MouseEvent) => void;
     constructor(options: OceanOption) {
         const {container} = options;
         this.uniforms = {value: 1.0};
@@ -183,7 +184,6 @@ export default class Ocean {
 
             this.pointer.x = ((event.clientX - this.left) / (window.innerWidth - this.left)) * 2 - 1;
             this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            console.log(event.clientX, this.left);
             // 设置相交
             this.raycaster.setFromCamera(this.pointer, this.camera);
 
@@ -195,6 +195,7 @@ export default class Ocean {
                     intersects[0].uv;
             }
         };
+        this.onPointerMove = onPointerMove;
         window.addEventListener('pointermove', onPointerMove);
     }
     resize() {
@@ -209,5 +210,6 @@ export default class Ocean {
         window.removeEventListener('resize', () => {
             this.resize();
         });
+        window.removeEventListener('pointermove', this.onPointerMove);
     }
 }

@@ -44,6 +44,9 @@ export class Particle {
         this.x += this.vx + (this.orignX - this.x) * this.ease;
         this.y += this.vy + (this.orignY - this.y) * this.ease;
     }
+    print() {
+        //
+    }
     reset() {
         this.x = Math.random() * this.effect.width;
         this.y = Math.random() * this.effect.height;
@@ -69,13 +72,9 @@ export class Effect {
         this.offsetLeft = ctx.canvas.offsetLeft;
         this.offsetTop = ctx.canvas.offsetTop;
         this.init();
-        console.log('xxx--->', ctx.canvas.offsetLeft);
         window.addEventListener('mousemove', this.eventListener.bind(this));
     }
     eventListener(event: MouseEvent) {
-        // this.mouseInfo = event.
-        // console.log(event.x);
-        // console.log(this.offsetLeft, this.offsetTop);
         this.mouseInfo = {
             x: event.x - this.offsetLeft,
             y: event.y - this.offsetTop,
@@ -115,6 +114,11 @@ export class Effect {
     reset() {
         this.particles.forEach(particle => {
             particle.reset();
+        });
+    }
+    print() {
+        this.particles.forEach(particle => {
+            particle.print();
         });
     }
     destroy() {
