@@ -43,9 +43,9 @@ const PariicleImage = (props: Props) => {
             <div>
                 <Button
                     onClick={() => {
-                        EffectRef && EffectRef.reset();
+                        EffectRef && EffectRef.assemble();
                     }}>
-                    repaint
+                    assemble
                 </Button>
                 <Button
                     onClick={() => {
@@ -53,11 +53,18 @@ const PariicleImage = (props: Props) => {
                     }}>
                     blocks
                 </Button>
+
                 <Button
                     onClick={() => {
                         EffectRef && EffectRef.print();
                     }}>
                     print
+                </Button>
+                <Button
+                    onClick={() => {
+                        EffectRef && EffectRef.reset();
+                    }}>
+                    repaint
                 </Button>
             </div>
             <img

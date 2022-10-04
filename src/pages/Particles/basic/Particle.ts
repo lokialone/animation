@@ -1,3 +1,5 @@
+import {runInThisContext} from 'vm';
+
 export class Particle {
     orignX: number;
     orignY: number;
@@ -7,6 +9,7 @@ export class Particle {
     vx: number;
     vy: number;
     friction: number;
+    active: boolean;
     constructor(public x: number, public y: number, public effect: Effect, public color: string) {
         this.orignX = x;
         this.orignY = y;
@@ -20,12 +23,14 @@ export class Particle {
         this.vx = 0;
         this.vy = 0;
         this.friction = 0.9;
+        this.active = true;
     }
     draw() {
         this.effect.ctx.fillStyle = this.color;
         this.effect.ctx.fillRect(this.x, this.y, this.size, this.size);
     }
     update() {
+        if (!this.active) return;
         if (this.effect.mouseInfo) {
             const x0 = this.effect.mouseInfo.x;
             const y0 = this.effect.mouseInfo.y;
@@ -55,6 +60,16 @@ export class Particle {
         this.x = Math.random() * this.effect.width;
         this.y = Math.random() > 0.5 ? 0 : this.effect.height;
     }
+    assemble() {
+        this.x = Math.random() * this.effect.width;
+        this.y = 0;
+        this.active = false;
+        this.effect.counter++;
+        const timer = setTimeout(() => {
+            this.active = true;
+            clearTimeout(timer);
+        }, this.effect.counter);
+    }
 }
 
 export class Effect {
@@ -68,6 +83,7 @@ export class Effect {
     };
     offsetLeft: number;
     offsetTop: number;
+    counter: number;
     constructor(public ctx: CanvasRenderingContext2D) {
         this.gap = 3;
         this.particles = [];
@@ -75,6 +91,7 @@ export class Effect {
         this.height = ctx.canvas.height;
         this.offsetLeft = ctx.canvas.offsetLeft;
         this.offsetTop = ctx.canvas.offsetTop;
+        this.counter = 0;
         this.init();
         window.addEventListener('mousemove', this.eventListener.bind(this));
     }
@@ -128,6 +145,12 @@ export class Effect {
     blocks() {
         this.particles.forEach(particle => {
             particle.blocks();
+        });
+    }
+    assemble() {
+        this.counter = 0;
+        this.particles.forEach(particle => {
+            particle.assemble();
         });
     }
     destroy() {
