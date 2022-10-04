@@ -13,6 +13,7 @@ const Button = styled.div`
     padding: 10px;
     font-size: 30px;
     margin: 20px;
+    font-family: Bangers;
 `;
 let EffectRef: Effect;
 const PariicleImage = (props: Props) => {
@@ -48,9 +49,9 @@ const PariicleImage = (props: Props) => {
                 </Button>
                 <Button
                     onClick={() => {
-                        // EffectRef && EffectRef.blocks();
+                        EffectRef && EffectRef.blocks();
                     }}>
-                    print
+                    blocks
                 </Button>
                 <Button
                     onClick={() => {
