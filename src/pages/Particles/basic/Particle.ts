@@ -50,7 +50,14 @@ export class Particle {
         this.y += this.vy + (this.orignY - this.y) * this.ease;
     }
     print() {
-        //
+        this.x = this.effect.width / 2;
+        this.y = this.effect.height;
+        this.active = false;
+        this.effect.counter++;
+        const timer = setTimeout(() => {
+            this.active = true;
+            clearTimeout(timer);
+        }, this.effect.counter * 6);
     }
     reset() {
         this.x = Math.random() * this.effect.width;
@@ -138,6 +145,7 @@ export class Effect {
         });
     }
     print() {
+        this.counter = 0;
         this.particles.forEach(particle => {
             particle.print();
         });
