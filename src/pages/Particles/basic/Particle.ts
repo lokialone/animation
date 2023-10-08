@@ -1,5 +1,3 @@
-import {runInThisContext} from 'vm';
-
 export class Particle {
     orignX: number;
     orignY: number;
