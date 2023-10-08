@@ -17,6 +17,7 @@
         "react-scripts": "3.4.1",
         "redux": "^4.0.5",
         "rxjs": "^6.5.4",
+        "source-map": "^0.7.4",
         "three": "^0.144.0",
         "ts-shader-loader": "^2.0.1",
         "use-immer": "^0.4.0"
